@@ -1,11 +1,15 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { BsThreeDotsVertical } from "react-icons/bs"; // Ellipsis icon
+import { MdOutlineDelete } from "react-icons/md"; // Delete icon
 import { reducerCases } from "../utils/Constants";
 import { useStateProvider } from "../utils/StateProvider";
 
 export default function Playlists() {
   const [{ token, playlists, updatePlaylists }, dispatch] = useStateProvider();
+  const [selectedMenu, setSelectedMenu] = useState(null); // Track which menu is active
+  const menuRef = useRef(null); // Ref to detect outside clicks
 
   useEffect(() => {
     const getPlaylistData = async () => {
@@ -44,6 +48,37 @@ export default function Playlists() {
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
   };
 
+  const handleMenuToggle = (id) => {
+    setSelectedMenu(selectedMenu === id ? null : id); // Toggle the menu for the selected playlist
+  };
+
+  const handleDeletePlaylist = async (id) => {
+    try {
+      await axios.delete(`https://api.spotify.com/v1/playlists/${id}/followers`, {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      });
+      dispatch({ type: reducerCases.SET_UPDATE_PLAYLISTS }); // Refresh playlists after deletion
+    } catch (error) {
+      console.error("Error deleting playlist:", error);
+    }
+  };
+
+  // Handle outside clicks to close the ellipsis menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setSelectedMenu(null); // Close the menu if clicked outside
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
     <Container>
       <ul>
@@ -51,10 +86,29 @@ export default function Playlists() {
           // Remove "- PARTY" from the displayed name
           const displayName = name.replace("- PARTY", "").trim();
           return (
-            <li key={id} onClick={() => changeCurrentPlaylist(id)}>
-              <div className="playlist-item">
+            <li key={id}>
+              <div className="playlist-item" onClick={() => changeCurrentPlaylist(id)}>
                 <img src={image} alt="Playlist Art" />
                 <span>{displayName}</span>
+                <BsThreeDotsVertical
+                  className="ellipsis"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleMenuToggle(id);
+                  }}
+                />
+                {selectedMenu === id && (
+                  <div className="menu" ref={menuRef}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePlaylist(id);
+                      }}
+                    >
+                      <MdOutlineDelete /> Delete
+                    </button>
+                  </div>
+                )}
               </div>
             </li>
           );
@@ -78,6 +132,7 @@ const Container = styled.div`
       gap: 1rem;
       padding: 0.5rem 1rem;
       cursor: pointer;
+      position: relative;
       transition: background-color 0.3s ease-in-out;
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
@@ -91,6 +146,31 @@ const Container = styled.div`
       span {
         font-size: 0.9rem;
         color: inherit;
+      }
+      .ellipsis {
+        margin-left: auto;
+        cursor: pointer;
+      }
+      .menu {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #333;
+        padding: 0.5rem;
+        border-radius: 4px;
+        button {
+          display: flex;
+          align-items: center;
+          background: none;
+          border: none;
+          color: white;
+          cursor: pointer;
+          gap: 0.5rem;
+          &:hover {
+            color: red;
+          }
+        }
       }
     }
   }

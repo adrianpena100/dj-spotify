@@ -1,53 +1,20 @@
 // Sidebar.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import { MdHomeFilled, MdSearch, MdAdd } from "react-icons/md";
-import { IoLibrary } from "react-icons/io5";
+import { MdHomeFilled, MdSearch } from "react-icons/md";
+import { LuPartyPopper } from "react-icons/lu";
 import Playlists from "./Playlists";
-import axios from "axios";
-import { useStateProvider } from "../utils/StateProvider";
-import { reducerCases } from "../utils/Constants";
+import CreatePlaylist from "./CreatePlaylist";
+import { useStateProvider } from "../utils/StateProvider"; // Import state provider
+import { reducerCases } from "../utils/Constants"; // Import reducer cases
 
 export default function Sidebar() {
-  const [{ token }, dispatch] = useStateProvider();
-  const [showInput, setShowInput] = useState(false);
-  const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [, dispatch] = useStateProvider(); // Only destructure dispatch, no need for selectedPlaylistId
+  const [showInput, setShowInput] = useState(false); // Manage show input state here
 
-  const createPlaylist = async () => {
-    if (newPlaylistName.trim() !== "") {
-      const playlistName = newPlaylistName + " - PARTY";
-      try {
-        await axios.post(
-          `https://api.spotify.com/v1/me/playlists`,
-          {
-            name: playlistName,
-            description: "", // Set description to an empty string
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        // Reset the input
-        setNewPlaylistName("");
-        setShowInput(false);
-
-        // Fetch playlists again to update the sidebar
-        dispatch({ type: reducerCases.SET_UPDATE_PLAYLISTS });
-      } catch (error) {
-        console.error("Error creating playlist:", error);
-      }
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      createPlaylist();
-    }
+  const handleHomeClick = () => {
+    // Dispatch action to set selectedPlaylistId to the initial/default value
+    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M" });
   };
 
   return (
@@ -60,7 +27,7 @@ export default function Sidebar() {
           />
         </div>
         <ul>
-          <li>
+          <li onClick={handleHomeClick}>
             <MdHomeFilled />
             <span>Home</span>
           </li>
@@ -69,23 +36,11 @@ export default function Sidebar() {
             <span>Search</span>
           </li>
           <li>
-            <IoLibrary />
-            <span>Your Playlists</span>
+            <LuPartyPopper />
+            <span>Schedule</span>
           </li>
           <li>
-            <MdAdd />
-            {showInput ? (
-              <input
-                type="text"
-                placeholder="New Playlist Name"
-                value={newPlaylistName}
-                onChange={(e) => setNewPlaylistName(e.target.value)}
-                onKeyDown={handleKeyDown}
-                autoFocus
-              />
-            ) : (
-              <span onClick={() => setShowInput(true)}>Create Playlist</span>
-            )}
+            <CreatePlaylist showInput={showInput} setShowInput={setShowInput} />
           </li>
         </ul>
       </div>
