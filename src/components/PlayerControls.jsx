@@ -35,7 +35,7 @@ export default function PlayerControls() {
       });
       dispatch({
         type: reducerCases.SET_REPEAT_STATE,
-        repeatState: response.data.repeat_state,
+        repeatState: response.data.repeat_state || "off", // Set repeatState or default to "off"
       });
     };
     getPlaybackMode();

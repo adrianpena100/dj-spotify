@@ -14,6 +14,7 @@ export const initialState = {
   selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M",
   updatePlaylists: false,
   deviceId: null, // Added this line
+  repeatState: "off", // Set default repeat state to "off"
 };
 
 const reducer = (state, action) => {
@@ -74,6 +75,21 @@ const reducer = (state, action) => {
         ...state,
         updatePlaylists: true,
       };
+      case reducerCases.SET_VOLUME:
+        return {
+          ...state,
+          volume: action.volume,
+        };
+      case reducerCases.SET_PREVIOUS_VOLUME:
+        return {
+          ...state,
+          previousVolume: action.previousVolume,
+        };
+      case reducerCases.SET_MUTED:
+        return {
+          ...state,
+          isMuted: action.isMuted,
+        };
     default:
         return state;
 }

@@ -16,13 +16,13 @@ export default function Footer() {
 }
 
 const Container = styled.div`
-  height: 100%;
+  height: 68%; 
   width: 100%;
   background-color: #181818;
   border-top: 1px solid #282828;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr; /* Ensures three columns */
+  grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
-  justify-content: space-between; /* Adjusted alignment */
+  justify-content: space-between;
   padding: 0 1rem;
 `;

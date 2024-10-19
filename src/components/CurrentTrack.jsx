@@ -69,7 +69,7 @@ const Container = styled.div`
     &__info {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.1rem; /* Reduced the gap between track name and artists */
       &__track__name {
         color: white;
       }
@@ -79,3 +79,4 @@ const Container = styled.div`
     }
   }
 `;
+

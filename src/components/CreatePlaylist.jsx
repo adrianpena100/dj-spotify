@@ -75,7 +75,7 @@ export default function CreatePlaylist({ showInput, setShowInput }) {
         />
       ) : (
         <StyledButton onClick={() => setShowInput(true)}>
-          Create Playlist <MdAdd style={{ fontSize: "1.1rem", fontWeight: "bold" }} /> {/* Add MdAdd icon here */}
+          Create Party Playlist <MdAdd style={{ fontSize: "1.1rem", fontWeight: "bold" }} /> {/* Add MdAdd icon here */}
         </StyledButton>
       )}
     </>
