@@ -12,34 +12,50 @@ export default function Body({ headerBackground }) {
 
   useEffect(() => {
     const getInitialPlaylist = async () => {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const selectedPlaylist = {
-        id: response.data.id,
-        name: response.data.name,
-        description: response.data.description.startsWith("<a")
-          ? ""
-          : response.data.description,
-        image: response.data.images[0].url,
-        uri: response.data.uri, // Added this line
-        tracks: response.data.tracks.items.map(({ track }, index) => ({
-          id: track.id,
-          name: track.name,
-          artists: track.artists.map((artist) => artist.name),
-          image: track.album.images[2]?.url,
-          duration: track.duration_ms,
-          album: track.album.name,
-          track_number_in_playlist: index, // Added this line
-        })),
-      };
-      dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+      try {
+        const response = await axios.get(
+          `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const data = response.data;
+
+        // Handle cases where the playlist has no image
+        const playlistImage = data.images?.[0]?.url || "https://i.vinylcloud.io/404.svg";
+
+        // Handle cases where the playlist has no tracks
+        const tracks = data.tracks.items.length > 0
+          ? data.tracks.items.map(({ track }, index) => ({
+              id: track.id,
+              name: track.name,
+              artists: track.artists.map((artist) => artist.name),
+              image: track.album.images[2]?.url || "https://i.vinylcloud.io/404.svg",
+              duration: track.duration_ms,
+              album: track.album.name,
+              track_number_in_playlist: index,
+            }))
+          : [];
+
+        const selectedPlaylist = {
+          id: data.id,
+          name: data.name.replace("- PARTY", "").trim(),
+          description: data.description.startsWith("<a")
+            ? ""
+            : data.description,
+          image: playlistImage,
+          uri: data.uri,
+          tracks: tracks,
+        };
+
+        dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+      } catch (error) {
+        console.error("Error fetching playlist data:", error);
+      }
     };
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
@@ -54,9 +70,9 @@ export default function Body({ headerBackground }) {
     await axios.put(
       `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
       {
-        context_uri: selectedPlaylist.uri, // Use the playlist URI
+        context_uri: selectedPlaylist.uri,
         offset: {
-          position: track_number_in_playlist, // Position in the playlist
+          position: track_number_in_playlist,
         },
         position_ms: 0,
       },
@@ -115,54 +131,60 @@ export default function Body({ headerBackground }) {
               </div>
             </div>
             <div className="tracks">
-              {selectedPlaylist.tracks.map(
-                (
-                  {
-                    id,
-                    name,
-                    artists,
-                    image,
-                    duration,
-                    album,
-                    track_number_in_playlist,
-                  },
-                  index
-                ) => {
-                  return (
-                    <div
-                      className="row"
-                      key={id}
-                      onClick={() =>
-                        playTrack(
-                          id,
-                          name,
-                          artists,
-                          image,
-                          track_number_in_playlist
-                        )
-                      }
-                    >
-                      <div className="col">
-                        <span>{index + 1}</span>
-                      </div>
-                      <div className="col detail">
-                        <div className="image">
-                          <img src={image} alt="track" />
+              {selectedPlaylist.tracks.length > 0 ? (
+                selectedPlaylist.tracks.map(
+                  (
+                    {
+                      id,
+                      name,
+                      artists,
+                      image,
+                      duration,
+                      album,
+                      track_number_in_playlist,
+                    },
+                    index
+                  ) => {
+                    return (
+                      <div
+                        className="row"
+                        key={id}
+                        onClick={() =>
+                          playTrack(
+                            id,
+                            name,
+                            artists,
+                            image,
+                            track_number_in_playlist
+                          )
+                        }
+                      >
+                        <div className="col">
+                          <span>{index + 1}</span>
                         </div>
-                        <div className="info">
-                          <span className="name">{name}</span>
-                          <span>{artists.join(", ")}</span>
+                        <div className="col detail">
+                          <div className="image">
+                            <img src={image} alt="track" />
+                          </div>
+                          <div className="info">
+                            <span className="name">{name}</span>
+                            <span>{artists.join(", ")}</span>
+                          </div>
+                        </div>
+                        <div className="col">
+                          <span>{album}</span>
+                        </div>
+                        <div className="col">
+                          <span>{msToMinutesAndSeconds(duration)}</span>
                         </div>
                       </div>
-                      <div className="col">
-                        <span>{album}</span>
-                      </div>
-                      <div className="col">
-                        <span>{msToMinutesAndSeconds(duration)}</span>
-                      </div>
-                    </div>
-                  );
-                }
+                    );
+                  }
+                )
+              ) : (
+                <div className="no-tracks">
+                  <span>This playlist is empty.</span>
+                </div>
               )}
             </div>
           </div>
@@ -181,6 +203,8 @@ const Container = styled.div`
     .image {
       img {
         height: 15rem;
+        width: 15rem;
+        object-fit: cover;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
       }
     }
@@ -227,6 +251,7 @@ const Container = styled.div`
           img {
             height: 40px;
             width: 40px;
+            object-fit: cover;
           }
         }
         .detail {
@@ -237,6 +262,12 @@ const Container = styled.div`
             flex-direction: column;
           }
         }
+      }
+      .no-tracks {
+        padding: 2rem;
+        text-align: center;
+        color: #999;
+        font-size: 1.2rem;
       }
     }
   }

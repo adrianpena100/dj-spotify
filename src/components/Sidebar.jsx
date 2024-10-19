@@ -1,9 +1,55 @@
-import React from "react";
+// Sidebar.jsx
+import React, { useState } from "react";
 import styled from "styled-components";
-import { MdHomeFilled, MdSearch } from "react-icons/md";
+import { MdHomeFilled, MdSearch, MdAdd } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import Playlists from "./Playlists";
+import axios from "axios";
+import { useStateProvider } from "../utils/StateProvider";
+import { reducerCases } from "../utils/Constants";
+
 export default function Sidebar() {
+  const [{ token }, dispatch] = useStateProvider();
+  const [showInput, setShowInput] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+
+  const createPlaylist = async () => {
+    if (newPlaylistName.trim() !== "") {
+      const playlistName = newPlaylistName + " - PARTY";
+      try {
+        await axios.post(
+          `https://api.spotify.com/v1/me/playlists`,
+          {
+            name: playlistName,
+            description: "", // Set description to an empty string
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Reset the input
+        setNewPlaylistName("");
+        setShowInput(false);
+
+        // Fetch playlists again to update the sidebar
+        dispatch({ type: reducerCases.SET_UPDATE_PLAYLISTS });
+      } catch (error) {
+        console.error("Error creating playlist:", error);
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      createPlaylist();
+    }
+  };
+
   return (
     <Container>
       <div className="top__links">
@@ -24,7 +70,22 @@ export default function Sidebar() {
           </li>
           <li>
             <IoLibrary />
-            <span>Your Library</span>
+            <span>Your Playlists</span>
+          </li>
+          <li>
+            <MdAdd />
+            {showInput ? (
+              <input
+                type="text"
+                placeholder="New Playlist Name"
+                value={newPlaylistName}
+                onChange={(e) => setNewPlaylistName(e.target.value)}
+                onKeyDown={handleKeyDown}
+                autoFocus
+              />
+            ) : (
+              <span onClick={() => setShowInput(true)}>Create Playlist</span>
+            )}
           </li>
         </ul>
       </div>
@@ -59,10 +120,19 @@ const Container = styled.div`
       padding: 1rem;
       li {
         display: flex;
+        align-items: center;
         gap: 1rem;
         cursor: pointer;
         transition: 0.3s ease-in-out;
         &:hover {
+          color: white;
+        }
+        input {
+          flex: 1;
+          padding: 0.5rem;
+          background-color: #333;
+          border: none;
+          border-radius: 4px;
           color: white;
         }
       }

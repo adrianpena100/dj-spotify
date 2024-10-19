@@ -11,7 +11,8 @@ export const initialState = {
   playerInstance: null,
   progress: 0,
   duration: 0,
-  selectedPlaylistId: "37i9dQZF1E37jO8SiMT0yN",
+  selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M",
+  updatePlaylists: false,
   deviceId: null, // Added this line
 };
 
@@ -31,6 +32,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         playlists: action.playlists,
+        updatePlaylists: false, // Reset the update flag here
       };
     case reducerCases.SET_PLAYING:
       return {
@@ -67,6 +69,11 @@ const reducer = (state, action) => {
           ...state,
           repeatState: action.repeatState,
         };
+    case reducerCases.SET_UPDATE_PLAYLISTS:
+      return {
+        ...state,
+        updatePlaylists: true,
+      };
     default:
         return state;
 }

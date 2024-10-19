@@ -5,7 +5,8 @@ import { reducerCases } from "../utils/Constants";
 import { useStateProvider } from "../utils/StateProvider";
 
 export default function Playlists() {
-  const [{ token, playlists }, dispatch] = useStateProvider();
+  const [{ token, playlists, updatePlaylists }, dispatch] = useStateProvider();
+
   useEffect(() => {
     const getPlaylistData = async () => {
       const response = await axios.get(
@@ -17,24 +18,44 @@ export default function Playlists() {
           },
         }
       );
+
       const { items } = response.data;
-      const playlists = items.map(({ name, id }) => {
-        return { name, id };
+
+      // Filter playlists containing "- PARTY"
+      const filteredItems = items.filter(({ name }) =>
+        name.includes("- PARTY")
+      );
+
+      // Map over the filtered playlists to include images
+      const playlists = filteredItems.map(({ name, id, images }) => {
+        return {
+          name,
+          id,
+          image: images?.[0]?.url || "https://i.vinylcloud.io/404.svg", // Use default image if no image available
+        };
       });
+
       dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
     };
     getPlaylistData();
-  }, [token, dispatch]);
+  }, [token, dispatch, updatePlaylists]);
+
   const changeCurrentPlaylist = (selectedPlaylistId) => {
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
   };
+
   return (
     <Container>
       <ul>
-        {playlists.map(({ name, id }) => {
+        {playlists.map(({ name, id, image }) => {
+          // Remove "- PARTY" from the displayed name
+          const displayName = name.replace("- PARTY", "").trim();
           return (
             <li key={id} onClick={() => changeCurrentPlaylist(id)}>
-              {name}
+              <div className="playlist-item">
+                <img src={image} alt="Playlist Art" />
+                <span>{displayName}</span>
+              </div>
             </li>
           );
         })}
@@ -49,24 +70,27 @@ const Container = styled.div`
   overflow: hidden;
   ul {
     list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    height: 55vh;
-    max-height: 100%;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 0.7rem;
-      &-thumb {
-        background-color: rgba(255, 255, 255, 0.6);
-      }
-    }
-    li {
-      transition: 0.3s ease-in-out;
+    padding: 0;
+    margin: 0;
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
       cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
       &:hover {
-        color: white;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      img {
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      span {
+        font-size: 0.9rem;
+        color: inherit;
       }
     }
   }

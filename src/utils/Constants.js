@@ -10,5 +10,6 @@ export const reducerCases = {
     SET_DEVICE_ID: "SET_DEVICE_ID", // Added this line
     SET_SHUFFLE_STATE: "SET_SHUFFLE_STATE",
     SET_REPEAT_STATE: "SET_REPEAT_STATE",
+    SET_UPDATE_PLAYLISTS: "SET_UPDATE_PLAYLISTS",
   };
   
