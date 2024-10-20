@@ -95,6 +95,17 @@ const reducer = (state, action) => {
         ...state,
         searchTerm: action.searchTerm, // Update search term
       };
+      case reducerCases.SET_PROGRESS:
+        return {
+          ...state,
+          progress: action.progress,
+        };
+  
+      case reducerCases.SET_DURATION:
+        return {
+          ...state,
+          duration: action.duration,
+        };
     default:
         return state;
 }

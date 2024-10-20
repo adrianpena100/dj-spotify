@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
-import DisplayPlaylists from './DisplayPlaylists'; // Import the new component
+import DisplayPlaylists from './DisplayPlaylists'; 
 import SearchSong from './SearchSong';
 
 export default function Body({ headerBackground }) {
@@ -55,24 +55,32 @@ export default function Body({ headerBackground }) {
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
 
-  const playTrack = async (id, name, artists, image, track_number_in_playlist) => {
-    await axios.put(
-      `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
-      {
-        context_uri: selectedPlaylist.uri,
-        offset: { position: track_number_in_playlist },
-        position_ms: 0,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+  const playTrack = async (id, name, artists, image, track_number_in_playlist, duration) => {
+    try {
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+        {
+          context_uri: selectedPlaylist.uri,
+          offset: { position: track_number_in_playlist },
+          position_ms: 0,
         },
-      }
-    );
-    const currentPlaying = { id, name, artists, image };
-    dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      const currentPlaying = { id, name, artists, image };
+      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      dispatch({ type: reducerCases.SET_PROGRESS, progress: 0 });
+      dispatch({ type: reducerCases.SET_DURATION, duration });
+  
+    } catch (error) {
+      console.error("Error playing track:", error);
+    }
   };
 
   const msToMinutesAndSeconds = (ms) => {
@@ -84,7 +92,7 @@ export default function Body({ headerBackground }) {
   return (
     <Container headerBackground={headerBackground}>
       {searchTerm ? (  // If there is a searchTerm, show search results
-        <SearchSong searchTerm={searchTerm} />
+        <SearchSong searchTerm={searchTerm} playTrack={playTrack} />
       ) : (
         selectedPlaylist && (  // Otherwise, show the playlist
           <DisplayPlaylists 

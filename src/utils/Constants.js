@@ -15,5 +15,7 @@ export const reducerCases = {
     SET_PREVIOUS_VOLUME: "SET_PREVIOUS_VOLUME",
     SET_MUTED: "SET_MUTED",
     SET_SEARCH_TERM: "SET_SEARCH_TERM",
+    SET_PROGRESS: "SET_PROGRESS", // Added this
+    SET_DURATION: "SET_DURATION", // Added this
   };
   

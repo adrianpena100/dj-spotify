@@ -1,5 +1,4 @@
-// PlayerControls.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styled from "styled-components";
 import {
   BsFillPlayCircleFill,
@@ -14,32 +13,99 @@ import { reducerCases } from "../utils/Constants";
 
 export default function PlayerControls() {
   const [
-    { token, playerState, deviceId, shuffleState, repeatState },
+    { token, playerState, deviceId, shuffleState, repeatState, progress, duration },
     dispatch,
   ] = useStateProvider();
 
+  const [isSeeking, setIsSeeking] = useState(false); // Track seeking state
+  const [manualSeek, setManualSeek] = useState(false); // Track if seeking was manual
+
+  const progressIntervalRef = useRef(null);
+
   useEffect(() => {
-    const getPlaybackMode = async () => {
-      const response = await axios.get("https://api.spotify.com/v1/me/player", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        params: {
-          device_id: deviceId,
-        },
-      });
-      dispatch({
-        type: reducerCases.SET_SHUFFLE_STATE,
-        shuffleState: response.data.shuffle_state,
-      });
-      dispatch({
-        type: reducerCases.SET_REPEAT_STATE,
-        repeatState: response.data.repeat_state || "off", // Set repeatState or default to "off"
-      });
+    const getPlaybackInfo = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/me/player",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            params: {
+              device_id: deviceId,
+            },
+          }
+        );
+        if (response.data && response.data.item) {
+          dispatch({ type: reducerCases.SET_PROGRESS, progress: response.data.progress_ms });
+          dispatch({ type: reducerCases.SET_DURATION, duration: response.data.item.duration_ms });
+        }
+      } catch (error) {
+        console.error("Error getting playback info:", error);
+      }
     };
-    getPlaybackMode();
-  }, [token, deviceId, dispatch]);
+
+    if (playerState) {
+      getPlaybackInfo(); // Fetch playback info immediately on first play
+      progressIntervalRef.current = setInterval(() => {
+        dispatch({
+          type: reducerCases.SET_PROGRESS,
+          progress: Math.min(progress + 1000, duration),
+        });
+      }, 1000);
+    } else {
+      clearInterval(progressIntervalRef.current);
+    }
+
+    return () => clearInterval(progressIntervalRef.current);
+  }, [token, deviceId, playerState, duration, dispatch, progress]);
+
+  // Prevent changeTrack from running while seeking
+  const changeTrack = useCallback(async (type) => {
+    if (!isSeeking) {
+      setIsSeeking(true); // Set seeking state to prevent further skips
+      try {
+        await axios.post(
+          `https://api.spotify.com/v1/me/player/${type}?device_id=${deviceId}`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+
+        const response = await axios.get(
+          "https://api.spotify.com/v1/me/player",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+            params: {
+              device_id: deviceId,
+            },
+          }
+        );
+        if (response.data && response.data.item) {
+          dispatch({ type: reducerCases.SET_PROGRESS, progress: response.data.progress_ms });
+          dispatch({ type: reducerCases.SET_DURATION, duration: response.data.item.duration_ms });
+        }
+      } catch (error) {
+        console.error("Error changing track:", error);
+      } finally {
+        setIsSeeking(false); // Reset seeking state after track change
+        setManualSeek(false); // Reset manual seek after track change
+      }
+    }
+  }, [deviceId, dispatch, token, isSeeking]);
+
+  useEffect(() => {
+    // Auto-skip to next track when not seeking manually
+    if (progress >= duration && playerState && !isSeeking && !manualSeek) {
+      changeTrack("next");
+    }
+  }, [progress, duration, playerState, changeTrack, isSeeking, manualSeek]);
 
   const changeState = async () => {
     const state = playerState ? "pause" : "play";
@@ -48,7 +114,6 @@ export default function PlayerControls() {
       {},
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       }
@@ -57,20 +122,32 @@ export default function PlayerControls() {
       type: reducerCases.SET_PLAYER_STATE,
       playerState: !playerState,
     });
-  };
 
-  const changeTrack = async (type) => {
-    await axios.post(
-      `https://api.spotify.com/v1/me/player/${type}?device_id=${deviceId}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-    dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    if (!playerState) {
+      // Fetch playback info immediately after the play button is clicked
+      const getPlaybackInfo = async () => {
+        try {
+          const response = await axios.get(
+            "https://api.spotify.com/v1/me/player",
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+              params: {
+                device_id: deviceId,
+              },
+            }
+          );
+          if (response.data && response.data.item) {
+            dispatch({ type: reducerCases.SET_PROGRESS, progress: response.data.progress_ms });
+            dispatch({ type: reducerCases.SET_DURATION, duration: response.data.item.duration_ms });
+          }
+        } catch (error) {
+          console.error("Error getting playback info:", error);
+        }
+      };
+      getPlaybackInfo();
+    }
   };
 
   const toggleShuffle = async () => {
@@ -80,7 +157,6 @@ export default function PlayerControls() {
       {},
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       }
@@ -105,7 +181,6 @@ export default function PlayerControls() {
       {},
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       }
@@ -116,32 +191,82 @@ export default function PlayerControls() {
     });
   };
 
+  const handleProgressClick = async (e) => {
+    const width = e.target.clientWidth;
+    const clickX = e.nativeEvent.offsetX;
+    const newPosition = (clickX / width) * duration;
+
+    setIsSeeking(true);  // Mark as seeking
+    setManualSeek(true); // Mark as manual seek
+
+    try {
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/seek?position_ms=${Math.floor(newPosition)}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      dispatch({ type: reducerCases.SET_PROGRESS, progress: newPosition });
+    } catch (error) {
+      console.error("Error seeking the track:", error.response?.data || error);
+    } finally {
+      // Add a short timeout to avoid double skips after seeking
+      setTimeout(() => {
+        setIsSeeking(false);  // Reset the seeking state after the delay
+      }, 1000);
+    }
+  };
+
+  const formatTime = (ms) => {
+    if (!ms || isNaN(ms)) return "0:00";  // Default to "0:00" if the time is not available or invalid
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
   return (
     <Container>
-      <div className="shuffle">
-        <BsShuffle
-          onClick={toggleShuffle}
-          style={{ color: shuffleState ? "#1ed760" : "#b3b3b3" }}
-        />
+      <div className="controls">
+        <div className="shuffle">
+          <BsShuffle
+            onClick={toggleShuffle}
+            style={{ color: shuffleState ? "#1ed760" : "#b3b3b3" }}
+          />
+        </div>
+        <div className="previous">
+          <CgPlayTrackPrev onClick={() => changeTrack("previous")} />
+        </div>
+        <div className="state">
+          {playerState ? (
+            <BsFillPauseCircleFill onClick={changeState} />
+          ) : (
+            <BsFillPlayCircleFill onClick={changeState} />
+          )}
+        </div>
+        <div className="next">
+          <CgPlayTrackNext onClick={() => changeTrack("next")} />
+        </div>
+        <div className="repeat">
+          <FiRepeat
+            onClick={cycleRepeat}
+            style={{ color: repeatState !== "off" ? "#1ed760" : "#b3b3b3" }}
+          />
+        </div>
       </div>
-      <div className="previous">
-        <CgPlayTrackPrev onClick={() => changeTrack("previous")} />
-      </div>
-      <div className="state">
-        {playerState ? (
-          <BsFillPauseCircleFill onClick={changeState} />
-        ) : (
-          <BsFillPlayCircleFill onClick={changeState} />
-        )}
-      </div>
-      <div className="next">
-        <CgPlayTrackNext onClick={() => changeTrack("next")} />
-      </div>
-      <div className="repeat">
-        <FiRepeat
-          onClick={cycleRepeat}
-          style={{ color: repeatState !== "off" ? "#1ed760" : "#b3b3b3" }}
-        />
+
+      {/* Progress Bar */}
+      <div className="progress-container">
+        <span>{formatTime(progress || 0)}</span> {/* Default to 0 if progress is null */}
+        <div className="progress-bar" onClick={handleProgressClick}>
+          <div
+            className="progress"
+            style={{ width: `${(progress / duration) * 100 || 0}%` }}
+          ></div>
+        </div>
+        <span>{formatTime(duration || 0)}</span> {/* Default to 0 if duration is null */}
       </div>
     </Container>
   );
@@ -150,8 +275,41 @@ export default function PlayerControls() {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center; /* Center the controls */
-  gap: 2rem;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background-color: #b3b3b3;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress {
+    height: 100%;
+    background-color: #1ed760;
+  }
+
+  .progress-container span {
+    color: white; /* Change the time color to white */
+  }
 
   svg {
     color: #b3b3b3;
@@ -162,22 +320,18 @@ const Container = styled.div`
     }
   }
 
-  .state {
-    svg {
-      color: white; /* Ensure the play/pause button is visible */
-    }
+  .state svg {
+    color: white;
   }
 
   .previous,
   .next,
   .state {
-    font-size: 2rem; /* Adjust the size if necessary */
+    font-size: 2rem;
   }
 
   .shuffle,
-  .repeat {
-    svg {
-      font-size: 1.5rem;
-    }
+  .repeat svg {
+    font-size: 1.5rem;
   }
 `;
