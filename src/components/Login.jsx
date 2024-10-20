@@ -25,10 +25,11 @@ export default function Login() {
   return (
     <Container>
       <img
-        src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Black.png"
+        src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_White.png"
         alt="spotify"
       />
-      <button onClick={handleClick}>Connect Spotify</button>
+      <div>Spotify Live DJ</div>
+      <button onClick={handleClick}>Login With Spotify</button>
     </Container>
   );
 }
@@ -40,18 +41,26 @@ const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: #1db954;
+  background-color: #121212; /* Changed to Spotify's dark grey */
   gap: 5rem;
+
   img {
-    height: 20vh;
+    height: 15vh; /* Adjusted the image size to be smaller */
   }
+
+  div {
+    font-size: 2rem; /* Adjust as needed */
+    color: white; /* Set the font color to white */
+    font-weight: bold;
+  }
+
   button {
-    padding: 1rem 5rem;
-    border-radius: 5rem;
-    background-color: black;
-    color: #49f585;
+    padding: 0.75rem 3rem; /* Reduced the size of the button */
+    border-radius: 3rem;
+    background-color: #1db954;
+    color: white;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Reduced the font size */
     cursor: pointer;
   }
 `;
