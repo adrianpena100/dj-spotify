@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { FaSearch } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { reducerCases } from "../utils/Constants";
+
 export default function Navbar({ navBackground }) {
-  const [{ userInfo }] = useStateProvider();
+  const [{ userInfo }, dispatch] = useStateProvider();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Handle search input and update global state
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: e.target.value });
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: e.target.value });
+    }
+  };
+
   return (
     <Container navBackground={navBackground}>
       <div className="search__bar">
         <FaSearch />
-        <input type="text" placeholder="Artists, songs, or podcasts" />
+        <input
+          type="text"
+          placeholder="Artists, songs, or podcasts"
+          value={searchTerm}
+          onChange={handleSearchChange} // Handle input change
+          onKeyDown={handleSearchKeyDown} // Trigger search on Enter key
+        />
       </div>
       <div className="avatar">
         <a href={userInfo?.userUrl}>

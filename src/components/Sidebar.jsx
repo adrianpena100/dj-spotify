@@ -1,20 +1,21 @@
-// Sidebar.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import { MdHomeFilled, MdSearch } from "react-icons/md";
+import { MdHomeFilled } from "react-icons/md";
 import { LuPartyPopper } from "react-icons/lu";
 import Playlists from "./Playlists";
 import CreatePlaylist from "./CreatePlaylist";
-import { useStateProvider } from "../utils/StateProvider"; // Import state provider
-import { reducerCases } from "../utils/Constants"; // Import reducer cases
+import { useStateProvider } from "../utils/StateProvider";
+import { reducerCases } from "../utils/Constants";
+import { RiCalendarScheduleLine } from "react-icons/ri";
 
 export default function Sidebar() {
-  const [, dispatch] = useStateProvider(); // Only destructure dispatch, no need for selectedPlaylistId
-  const [showInput, setShowInput] = useState(false); // Manage show input state here
+  const [, dispatch] = useStateProvider();
+  const [showInput, setShowInput] = useState(false);
 
   const handleHomeClick = () => {
-    // Dispatch action to set selectedPlaylistId to the initial/default value
+    // Dispatch to set selectedPlaylistId to the initial/default value
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M" });
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
   };
 
   return (
@@ -32,12 +33,12 @@ export default function Sidebar() {
             <span>Home</span>
           </li>
           <li>
-            <MdSearch />
-            <span>Search</span>
+          <RiCalendarScheduleLine />
+            <span>Schedule</span>
           </li>
           <li>
             <LuPartyPopper />
-            <span>Schedule</span>
+            <span>Events</span>
           </li>
           <li>
             <CreatePlaylist showInput={showInput} setShowInput={setShowInput} />

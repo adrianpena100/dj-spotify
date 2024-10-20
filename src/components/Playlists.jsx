@@ -7,7 +7,7 @@ import { reducerCases } from "../utils/Constants";
 import { useStateProvider } from "../utils/StateProvider";
 
 export default function Playlists() {
-  const [{ token, playlists, updatePlaylists }, dispatch] = useStateProvider();
+  const [{ token, playlists, updatePlaylists, searchTerm }, dispatch] = useStateProvider();
   const [selectedMenu, setSelectedMenu] = useState(null); // Track which menu is active
   const menuRef = useRef(null); // Ref to detect outside clicks
 
@@ -45,7 +45,16 @@ export default function Playlists() {
   }, [token, dispatch, updatePlaylists]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
+    if (searchTerm) {
+      // Only clear the playlist if a search term exists (active search)
+      dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: null });
+    }
+    
+    // Set the new playlist ID to trigger fetching of the new playlist
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
+
+    // Clear search term to reset search and show playlist
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" });
   };
 
   const handleMenuToggle = (id) => {

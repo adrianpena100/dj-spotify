@@ -1,13 +1,13 @@
-// Body.jsx
 import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
-import { AiFillClockCircle } from "react-icons/ai";
 import { reducerCases } from "../utils/Constants";
+import DisplayPlaylists from './DisplayPlaylists'; // Import the new component
+import SearchSong from './SearchSong';
 
 export default function Body({ headerBackground }) {
-  const [{ token, selectedPlaylist, selectedPlaylistId, deviceId }, dispatch] =
+  const [{ token, selectedPlaylist, selectedPlaylistId, deviceId, searchTerm }, dispatch] =
     useStateProvider();
 
   useEffect(() => {
@@ -25,10 +25,7 @@ export default function Body({ headerBackground }) {
 
         const data = response.data;
 
-        // Handle cases where the playlist has no image
         const playlistImage = data.images?.[0]?.url || "https://i.vinylcloud.io/404.svg";
-
-        // Handle cases where the playlist has no tracks
         const tracks = data.tracks.items.length > 0
           ? data.tracks.items.map(({ track }, index) => ({
               id: track.id,
@@ -44,9 +41,7 @@ export default function Body({ headerBackground }) {
         const selectedPlaylist = {
           id: data.id,
           name: data.name.replace("- PARTY", "").trim(),
-          description: data.description.startsWith("<a")
-            ? ""
-            : data.description,
+          description: data.description.startsWith("<a") ? "" : data.description,
           image: playlistImage,
           uri: data.uri,
           tracks: tracks,
@@ -60,20 +55,12 @@ export default function Body({ headerBackground }) {
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
 
-  const playTrack = async (
-    id,
-    name,
-    artists,
-    image,
-    track_number_in_playlist
-  ) => {
+  const playTrack = async (id, name, artists, image, track_number_in_playlist) => {
     await axios.put(
       `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
       {
         context_uri: selectedPlaylist.uri,
-        offset: {
-          position: track_number_in_playlist,
-        },
+        offset: { position: track_number_in_playlist },
         position_ms: 0,
       },
       {
@@ -83,112 +70,29 @@ export default function Body({ headerBackground }) {
         },
       }
     );
-    const currentPlaying = {
-      id,
-      name,
-      artists,
-      image,
-    };
+    const currentPlaying = { id, name, artists, image };
     dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
   };
 
   const msToMinutesAndSeconds = (ms) => {
-    var minutes = Math.floor(ms / 60000);
-    var seconds = ((ms % 60000) / 1000).toFixed(0);
+    const minutes = Math.floor(ms / 60000);
+    const seconds = ((ms % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
 
   return (
     <Container headerBackground={headerBackground}>
-      {selectedPlaylist && (
-        <>
-          <div className="playlist">
-            <div className="image">
-              <img src={selectedPlaylist.image} alt="selected playlist" />
-            </div>
-            <div className="details">
-              <span className="type">PLAYLIST</span>
-              <h1 className="title">{selectedPlaylist.name}</h1>
-              <p className="description">{selectedPlaylist.description}</p>
-            </div>
-          </div>
-          <div className="list">
-            <div className="header-row">
-              <div className="col">
-                <span>#</span>
-              </div>
-              <div className="col">
-                <span>TITLE</span>
-              </div>
-              <div className="col">
-                <span>ALBUM</span>
-              </div>
-              <div className="col">
-                <span>
-                  <AiFillClockCircle />
-                </span>
-              </div>
-            </div>
-            <div className="tracks">
-              {selectedPlaylist.tracks.length > 0 ? (
-                selectedPlaylist.tracks.map(
-                  (
-                    {
-                      id,
-                      name,
-                      artists,
-                      image,
-                      duration,
-                      album,
-                      track_number_in_playlist,
-                    },
-                    index
-                  ) => {
-                    return (
-                      <div
-                        className="row"
-                        key={id}
-                        onClick={() =>
-                          playTrack(
-                            id,
-                            name,
-                            artists,
-                            image,
-                            track_number_in_playlist
-                          )
-                        }
-                      >
-                        <div className="col">
-                          <span>{index + 1}</span>
-                        </div>
-                        <div className="col detail">
-                          <div className="image">
-                            <img src={image} alt="track" />
-                          </div>
-                          <div className="info">
-                            <span className="name">{name}</span>
-                            <span>{artists.join(", ")}</span>
-                          </div>
-                        </div>
-                        <div className="col">
-                          <span>{album}</span>
-                        </div>
-                        <div className="col">
-                          <span>{msToMinutesAndSeconds(duration)}</span>
-                        </div>
-                      </div>
-                    );
-                  }
-                )
-              ) : (
-                <div className="no-tracks">
-                  <span>This playlist is empty.</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </>
+      {searchTerm ? (  // If there is a searchTerm, show search results
+        <SearchSong searchTerm={searchTerm} />
+      ) : (
+        selectedPlaylist && (  // Otherwise, show the playlist
+          <DisplayPlaylists 
+            selectedPlaylist={selectedPlaylist} 
+            playTrack={playTrack} 
+            msToMinutesAndSeconds={msToMinutesAndSeconds} 
+          />
+        )
       )}
     </Container>
   );

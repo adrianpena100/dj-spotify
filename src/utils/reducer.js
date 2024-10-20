@@ -90,6 +90,11 @@ const reducer = (state, action) => {
           ...state,
           isMuted: action.isMuted,
         };
+    case reducerCases.SET_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: action.searchTerm, // Update search term
+      };
     default:
         return state;
 }
