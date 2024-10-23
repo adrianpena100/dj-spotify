@@ -1,59 +1,95 @@
+// src/components/Body.jsx
 import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
-import DisplayPlaylists from './DisplayPlaylists'; 
+import DisplayPlaylists from './DisplayPlaylists';
 import SearchSong from './SearchSong';
+import Scheduler from './Scheduler';
+import Queue from './Queue';
 
 export default function Body({ headerBackground }) {
-  const [{ token, selectedPlaylist, selectedPlaylistId, deviceId, searchTerm }, dispatch] =
-    useStateProvider();
+  const [
+    {
+      token,
+      selectedPlaylist,
+      selectedPlaylistId,
+      deviceId,
+      searchTerm,
+      selectedView,
+      playlistsCache, // Add playlistsCache to state
+    },
+    dispatch,
+  ] = useStateProvider();
 
   useEffect(() => {
-    const getInitialPlaylist = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+    // Only fetch playlist if selectedView is null and playlist is not in cache
+    if (!selectedView && selectedPlaylistId && !playlistsCache[selectedPlaylistId]) {
+      const getPlaylist = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-        const data = response.data;
+          const data = response.data;
 
-        const playlistImage = data.images?.[0]?.url || "https://i.vinylcloud.io/404.svg";
-        const tracks = data.tracks.items.length > 0
-          ? data.tracks.items.map(({ track }, index) => ({
-              id: track.id,
-              name: track.name,
-              artists: track.artists.map((artist) => artist.name),
-              image: track.album.images[2]?.url || "https://i.vinylcloud.io/404.svg",
-              duration: track.duration_ms,
-              album: track.album.name,
-              track_number_in_playlist: index,
-            }))
-          : [];
+          const playlistImage =
+            data.images?.[0]?.url || "https://i.vinylcloud.io/404.svg";
+          const tracks =
+            data.tracks.items.length > 0
+              ? data.tracks.items.map(({ track }, index) => ({
+                  id: track.id,
+                  name: track.name,
+                  artists: track.artists.map((artist) => artist.name),
+                  image:
+                    track.album.images[2]?.url ||
+                    "https://i.vinylcloud.io/404.svg",
+                  duration: track.duration_ms,
+                  album: track.album.name,
+                  track_number_in_playlist: index,
+                }))
+              : [];
 
-        const selectedPlaylist = {
-          id: data.id,
-          name: data.name.replace("- PARTY", "").trim(),
-          description: data.description.startsWith("<a") ? "" : data.description,
-          image: playlistImage,
-          uri: data.uri,
-          tracks: tracks,
-        };
+          const selectedPlaylist = {
+            id: data.id,
+            name: data.name.replace("- PARTY", "").trim(),
+            description: data.description.startsWith("<a")
+              ? ""
+              : data.description,
+            image: playlistImage,
+            uri: data.uri,
+            tracks: tracks,
+          };
 
-        dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
-      } catch (error) {
-        console.error("Error fetching playlist data:", error);
-      }
-    };
-    getInitialPlaylist();
-  }, [token, dispatch, selectedPlaylistId]);
+          // Store playlist in cache
+          dispatch({
+            type: reducerCases.ADD_PLAYLIST_TO_CACHE,
+            id: selectedPlaylistId,
+            playlist: selectedPlaylist,
+          });
+
+          // Set the selected playlist
+          dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+        } catch (error) {
+          console.error("Error fetching playlist data:", error);
+        }
+      };
+      getPlaylist();
+    } else if (playlistsCache[selectedPlaylistId]) {
+      // If playlist is in cache, set it as the selected playlist
+      dispatch({
+        type: reducerCases.SET_PLAYLIST,
+        selectedPlaylist: playlistsCache[selectedPlaylistId],
+      });
+    }
+  }, [token, dispatch, selectedPlaylistId, selectedView, playlistsCache]);
 
   const playTrack = async (id, name, artists, image, track_number_in_playlist, duration) => {
     try {
@@ -71,13 +107,13 @@ export default function Body({ headerBackground }) {
           },
         }
       );
-  
+
       const currentPlaying = { id, name, artists, image };
       dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
       dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
       dispatch({ type: reducerCases.SET_PROGRESS, progress: 0 });
       dispatch({ type: reducerCases.SET_DURATION, duration });
-  
+
     } catch (error) {
       console.error("Error playing track:", error);
     }
@@ -91,19 +127,32 @@ export default function Body({ headerBackground }) {
 
   return (
     <Container headerBackground={headerBackground}>
-      {searchTerm ? (  // If there is a searchTerm, show search results
+      {searchTerm ? (
         <SearchSong searchTerm={searchTerm} playTrack={playTrack} />
-      ) : (
-        selectedPlaylist && (  // Otherwise, show the playlist
-          <DisplayPlaylists 
-            selectedPlaylist={selectedPlaylist} 
-            playTrack={playTrack} 
-            msToMinutesAndSeconds={msToMinutesAndSeconds} 
-          />
-        )
-      )}
+      ) : selectedView ? (
+        // Render the selected view based on selectedView
+        renderSelectedView()
+      ) : selectedPlaylist ? (
+        <DisplayPlaylists
+          selectedPlaylist={selectedPlaylist}
+          playTrack={playTrack}
+          msToMinutesAndSeconds={msToMinutesAndSeconds}
+        />
+      ) : null}
     </Container>
   );
+  
+  function renderSelectedView() {
+    switch (selectedView) {
+      case "SCHEDULER":
+        return <Scheduler />;
+      case "QUEUE":
+        return <Queue />;
+      // Add other views if any
+      default:
+        return null;
+    }
+  }
 }
 
 const Container = styled.div`

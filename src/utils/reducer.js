@@ -15,6 +15,11 @@ export const initialState = {
   updatePlaylists: false,
   deviceId: null, // Added this line
   repeatState: "off", // Set default repeat state to "off"
+  scheduledPlaylists: [], // Initialize scheduled playlists
+  volume: 50, // Default volume
+  isMuted: false,
+  previousVolume: 50,
+  playlistsCache: {}, // Add this line
 };
 
 const reducer = (state, action) => {
@@ -106,6 +111,46 @@ const reducer = (state, action) => {
           ...state,
           duration: action.duration,
         };
+        case reducerCases.SET_SELECTED_VIEW:
+          return {
+            ...state,
+            selectedView: action.selectedView,
+          };
+          case reducerCases.SET_SCHEDULED_PLAYLISTS:
+            return {
+              ...state,
+              scheduledPlaylists: action.scheduledPlaylists,
+            };
+          case reducerCases.ADD_TO_SCHEDULE:
+            return {
+              ...state,
+              scheduledPlaylists: [...state.scheduledPlaylists, action.playlist],
+            };
+            case reducerCases.MARK_PLAYLIST_PLAYED:
+              return {
+                ...state,
+                scheduledPlaylists: state.scheduledPlaylists.map((playlist) =>
+                  playlist.id === action.id ? { ...playlist, played: true } : playlist
+                ),
+              };
+              case reducerCases.ADD_PLAYLIST_TO_CACHE:
+                return {
+                  ...state,
+                  playlistsCache: {
+                    ...state.playlistsCache,
+                    [action.id]: action.playlist,
+                  },
+                };
+                case reducerCases.RESET_SCHEDULER:
+                  return {
+                    ...state,
+                    resetScheduler: true,
+                  };
+                case reducerCases.CLEAR_RESET_SCHEDULER:
+                  return {
+                    ...state,
+                    resetScheduler: false,
+                  };
     default:
         return state;
 }

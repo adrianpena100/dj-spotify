@@ -1,5 +1,5 @@
-// Spotify.jsx
-import React, { useEffect, useRef, useState } from "react";
+// src/components/Spotify.jsx
+import React, { useEffect, useRef, useState } from "react"; // Added 'useState' here
 import Sidebar from "./Sidebar";
 import styled from "styled-components";
 import Footer from "./Footer";
@@ -8,13 +8,16 @@ import axios from "axios";
 import { useStateProvider } from "../utils/StateProvider";
 import Body from "./Body";
 import { reducerCases } from "../utils/Constants";
-import SpotifyPlayer from "./SpotifyPlayer"; // Import the SpotifyPlayer component
+import SpotifyPlayer from "./SpotifyPlayer";
 
 export default function Spotify() {
-  const [{ token }, dispatch] = useStateProvider();
+  const [{ token, scheduledPlaylists, deviceId }, dispatch] = useStateProvider();
+  const bodyRef = useRef();
+  const intervalRef = useRef(null);
+
   const [navBackground, setNavBackground] = useState(false);
   const [headerBackground, setHeaderBackground] = useState(false);
-  const bodyRef = useRef();
+
   const bodyScrolled = () => {
     bodyRef.current.scrollTop >= 30
       ? setNavBackground(true)
@@ -23,6 +26,7 @@ export default function Spotify() {
       ? setHeaderBackground(true)
       : setHeaderBackground(false);
   };
+
   useEffect(() => {
     const getUserInfo = async () => {
       const { data } = await axios.get("https://api.spotify.com/v1/me", {
@@ -40,6 +44,7 @@ export default function Spotify() {
     };
     getUserInfo();
   }, [dispatch, token]);
+
   useEffect(() => {
     const getPlaybackState = async () => {
       const { data } = await axios.get(
@@ -58,6 +63,74 @@ export default function Spotify() {
     };
     getPlaybackState();
   }, [dispatch, token]);
+
+  useEffect(() => {
+    const checkSchedule = () => {
+      const now = new Date();
+      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+
+      scheduledPlaylists.forEach(async (playlist) => {
+        if (playlist.time === currentTime && !playlist.played) {
+          try {
+            if (playlist.shuffle) {
+              await axios.put(
+                `https://api.spotify.com/v1/me/player/shuffle?state=true&device_id=${deviceId}`,
+                {},
+                {
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                }
+              );
+            } else {
+              await axios.put(
+                `https://api.spotify.com/v1/me/player/shuffle?state=false&device_id=${deviceId}`,
+                {},
+                {
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                }
+              );
+            }
+
+            await axios.put(
+              `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+              {
+                context_uri: playlist.uri,
+                offset: { position: 0 },
+                position_ms: 0,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + token,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            dispatch({
+              type: reducerCases.MARK_PLAYLIST_PLAYED,
+              id: playlist.id,
+            });
+          } catch (error) {
+            console.error("Error playing scheduled playlist:", error);
+          }
+        }
+      });
+    };
+
+    if (scheduledPlaylists && scheduledPlaylists.length > 0) {
+      intervalRef.current = setInterval(checkSchedule, 60000); // Check every minute
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [scheduledPlaylists, token, deviceId, dispatch]);
+
   return (
     <Container>
       <div className="spotify__body">
@@ -72,7 +145,7 @@ export default function Spotify() {
       <div className="spotify__footer">
         <Footer />
       </div>
-      <SpotifyPlayer /> {/* Add this line */}
+      <SpotifyPlayer />
     </Container>
   );
 }

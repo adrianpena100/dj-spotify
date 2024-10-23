@@ -1,3 +1,4 @@
+// src/components/Playlists.jsx
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
@@ -32,10 +33,14 @@ export default function Playlists() {
 
       // Map over the filtered playlists to include images
       const playlists = filteredItems.map(({ name, id, images }) => {
+        const imageUrl =
+          images && images.length > 0 && images[0].url
+            ? images[0].url
+            : "https://i.vinylcloud.io/404.svg";
         return {
           name,
           id,
-          image: images?.[0]?.url || "https://i.vinylcloud.io/404.svg", // Use default image if no image available
+          image: imageUrl,
         };
       });
 
@@ -45,11 +50,14 @@ export default function Playlists() {
   }, [token, dispatch, updatePlaylists]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
+    // Reset selectedView to null to allow Body to render the selected playlist
+    dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: null });
+
     if (searchTerm) {
       // Only clear the playlist if a search term exists (active search)
       dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: null });
     }
-    
+
     // Set the new playlist ID to trigger fetching of the new playlist
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
 
@@ -97,7 +105,13 @@ export default function Playlists() {
           return (
             <li key={id}>
               <div className="playlist-item" onClick={() => changeCurrentPlaylist(id)}>
-                <img src={image} alt="Playlist Art" />
+                <img
+                  src={image}
+                  alt="Playlist Art"
+                  onError={(e) => {
+                    e.target.src = "https://i.vinylcloud.io/404.svg";
+                  }}
+                />
                 <span>{displayName}</span>
                 <BsThreeDotsVertical
                   className="ellipsis"
@@ -144,6 +158,7 @@ const Container = styled.div`
       position: relative;
       transition: background-color 0.3s ease-in-out;
       &:hover {
+        color: white;
         background-color: rgba(255, 255, 255, 0.1);
       }
       img {
