@@ -79,6 +79,7 @@ export default function Volume() {
 
 const Container = styled.div`
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
 
@@ -91,8 +92,7 @@ const Container = styled.div`
   }
 
   input {
-    width: 100%;
-    max-width: 450px;
+    width: 15rem;
     border-radius: 2rem;
     height: 0.5rem;
     background: white; /* White track */

@@ -1,13 +1,14 @@
 // src/components/Body.jsx
+
 import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
-import DisplayPlaylists from './DisplayPlaylists';
-import SearchSong from './SearchSong';
-import Scheduler from './Scheduler';
-import Queue from './Queue';
+import DisplayPlaylists from "./DisplayPlaylists";
+import SearchSong from "./SearchSong";
+import Scheduler from "./Scheduler";
+import Queue from "./Queue";
 
 export default function Body({ headerBackground }) {
   const [
@@ -18,14 +19,14 @@ export default function Body({ headerBackground }) {
       deviceId,
       searchTerm,
       selectedView,
-      playlistsCache, // Add playlistsCache to state
+      updatePlaylists,
+      notification,
     },
     dispatch,
   ] = useStateProvider();
 
   useEffect(() => {
-    // Only fetch playlist if selectedView is null and playlist is not in cache
-    if (!selectedView && selectedPlaylistId && !playlistsCache[selectedPlaylistId]) {
+    if (selectedPlaylistId && !selectedView) {
       const getPlaylist = async () => {
         try {
           const response = await axios.get(
@@ -68,30 +69,38 @@ export default function Body({ headerBackground }) {
             tracks: tracks,
           };
 
-          // Store playlist in cache
-          dispatch({
-            type: reducerCases.ADD_PLAYLIST_TO_CACHE,
-            id: selectedPlaylistId,
-            playlist: selectedPlaylist,
-          });
-
           // Set the selected playlist
           dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+
+          // Reset updatePlaylists flag
+          if (updatePlaylists) {
+            dispatch({
+              type: reducerCases.SET_UPDATE_PLAYLISTS,
+              updatePlaylists: false,
+            });
+          }
         } catch (error) {
           console.error("Error fetching playlist data:", error);
         }
       };
       getPlaylist();
-    } else if (playlistsCache[selectedPlaylistId]) {
-      // If playlist is in cache, set it as the selected playlist
-      dispatch({
-        type: reducerCases.SET_PLAYLIST,
-        selectedPlaylist: playlistsCache[selectedPlaylistId],
-      });
     }
-  }, [token, dispatch, selectedPlaylistId, selectedView, playlistsCache]);
+  }, [
+    token,
+    dispatch,
+    selectedPlaylistId,
+    selectedView,
+    updatePlaylists,
+  ]);
 
-  const playTrack = async (id, name, artists, image, track_number_in_playlist, duration) => {
+  const playTrack = async (
+    id,
+    name,
+    artists,
+    image,
+    track_number_in_playlist,
+    duration
+  ) => {
     try {
       await axios.put(
         `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
@@ -113,7 +122,6 @@ export default function Body({ headerBackground }) {
       dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
       dispatch({ type: reducerCases.SET_PROGRESS, progress: 0 });
       dispatch({ type: reducerCases.SET_DURATION, duration });
-
     } catch (error) {
       console.error("Error playing track:", error);
     }
@@ -125,10 +133,21 @@ export default function Body({ headerBackground }) {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
 
+  // Clear the notification after 3 seconds
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        dispatch({ type: reducerCases.CLEAR_NOTIFICATION });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification, dispatch]);
+
   return (
     <Container headerBackground={headerBackground}>
+      {notification && <div className="notification">{notification}</div>}
       {searchTerm ? (
-        <SearchSong searchTerm={searchTerm} playTrack={playTrack} />
+        <SearchSong searchTerm={searchTerm} />
       ) : selectedView ? (
         // Render the selected view based on selectedView
         renderSelectedView()
@@ -141,7 +160,7 @@ export default function Body({ headerBackground }) {
       ) : null}
     </Container>
   );
-  
+
   function renderSelectedView() {
     switch (selectedView) {
       case "SCHEDULER":
@@ -183,7 +202,7 @@ const Container = styled.div`
   .list {
     .header-row {
       display: grid;
-      grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
+      grid-template-columns: 0.3fr 3fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
       margin: 1rem 0 0 0;
       color: #dddcdc;
       position: sticky;
@@ -201,7 +220,7 @@ const Container = styled.div`
       .row {
         padding: 0.5rem 1rem;
         display: grid;
-        grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr;
+        grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
         &:hover {
           background-color: rgba(0, 0, 0, 0.7);
         }

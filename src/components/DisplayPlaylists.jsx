@@ -49,7 +49,7 @@ export default function DisplayPlaylists({ selectedPlaylist, playTrack, msToMinu
                 return (
                   <div
                     className="row"
-                    key={id}
+                    key={`${id}-${index}`}
                     onClick={() =>
                       playTrack(
                         id,

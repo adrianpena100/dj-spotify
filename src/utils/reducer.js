@@ -16,9 +16,9 @@ export const initialState = {
   deviceId: null, // Added this line
   repeatState: "off", // Set default repeat state to "off"
   scheduledPlaylists: [], // Initialize scheduled playlists
-  volume: 50, // Default volume
+  volume: 10, // Default volume
   isMuted: false,
-  previousVolume: 50,
+  previousVolume: 10,
   playlistsCache: {}, // Add this line
 };
 
