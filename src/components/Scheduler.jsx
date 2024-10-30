@@ -249,8 +249,8 @@ const Container = styled.div`
 
     img {
       width: 100%;
-      max-width: 300px;
-      height: 300px;
+      max-width: 200px;
+      height: 200px;
       border-radius: 8px;
       object-fit: cover;
       transition: transform 0.3s ease-in-out; /* Enables hover scaling */

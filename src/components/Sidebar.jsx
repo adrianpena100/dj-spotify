@@ -14,22 +14,28 @@ export default function Sidebar() {
   const [showInput, setShowInput] = useState(false);
 
   const handleHomeClick = () => {
-    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M" });
+    dispatch({
+      type: reducerCases.SET_PLAYLIST_ID,
+      selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M", // Your default playlist ID
+    });
     dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
     dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: null }); // Reset the view
   };
 
   const handleSchedulerClick = () => {
-    dispatch({
-      type: reducerCases.SET_SELECTED_VIEW,
-      selectedView: "SCHEDULER",
-    });
+    dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: "SCHEDULER" });
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
+    // Optionally reset the selected playlist
+    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null });
     // Dispatch an action to reset the scheduler state
     dispatch({ type: reducerCases.RESET_SCHEDULER });
   };
 
   const handleQueueClick = () => {
     dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: "QUEUE" });
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
+    // Optionally reset the selected playlist
+    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null });
   };
 
   return (

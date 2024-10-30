@@ -36,7 +36,7 @@ export default function Navbar({ navBackground }) {
         <FaSearch />
         <input
           type="text"
-          placeholder="Artists, songs, or podcasts"
+          placeholder="Search a song"
           value={searchTerm}
           onChange={handleSearchChange}
           onKeyDown={handleSearchKeyDown}
@@ -63,7 +63,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
-  height: 15vh;
+  height: 5vh;
   position: sticky;
   top: 0;
   transition: 0.3s ease-in-out;
