@@ -6,12 +6,19 @@ import { useStateProvider } from '../utils/StateProvider';
 export default function Queue() {
   const [{ scheduledPlaylists }] = useStateProvider();
 
+  // Sort playlists by time
+  const sortedPlaylists = scheduledPlaylists.sort((a, b) => {
+    const timeA = new Date(`1970-01-01T${a.time}:00`);
+    const timeB = new Date(`1970-01-01T${b.time}:00`);
+    return timeA - timeB;
+  });
+
   return (
     <Container>
       <h2>Scheduled Playlists</h2>
-      {scheduledPlaylists && scheduledPlaylists.length > 0 ? (
+      {sortedPlaylists && sortedPlaylists.length > 0 ? (
         <ul>
-          {scheduledPlaylists.map((playlist, index) => (
+          {sortedPlaylists.map((playlist, index) => (
             <li key={index}>
               <div className="playlist-info">
                 <img src={playlist.image} alt={playlist.name} />

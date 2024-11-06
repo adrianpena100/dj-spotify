@@ -1,4 +1,4 @@
-// Reducer.js
+// reducer.js
 import { reducerCases } from "./Constants";
 
 export const initialState = {
@@ -13,13 +13,15 @@ export const initialState = {
   duration: 0,
   selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M",
   updatePlaylists: false,
-  deviceId: null, // Added this line
-  repeatState: "off", // Set default repeat state to "off"
-  scheduledPlaylists: [], // Initialize scheduled playlists
-  volume: 10, // Default volume
+  deviceId: null,
+  repeatState: "off",
+  scheduledPlaylists: [],
+  volume: 10,
   isMuted: false,
   previousVolume: 10,
-  playlistsCache: {}, // Add this line
+  playlistsCache: {},
+  queue: [],
+  resetScheduler: false,
 };
 
 const reducer = (state, action) => {
@@ -38,7 +40,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         playlists: action.playlists,
-        updatePlaylists: false, // Reset the update flag here
+        updatePlaylists: false,
       };
     case reducerCases.SET_PLAYING:
       return {
@@ -60,100 +62,99 @@ const reducer = (state, action) => {
         ...state,
         selectedPlaylistId: action.selectedPlaylistId,
       };
-    case reducerCases.SET_DEVICE_ID: // Added this case
+    case reducerCases.SET_DEVICE_ID:
       return {
         ...state,
         deviceId: action.deviceId,
       };
     case reducerCases.SET_SHUFFLE_STATE:
-        return {
-          ...state,
-          shuffleState: action.shuffleState,
-        };
+      return {
+        ...state,
+        shuffleState: action.shuffleState,
+      };
     case reducerCases.SET_REPEAT_STATE:
-        return {
-          ...state,
-          repeatState: action.repeatState,
-        };
+      return {
+        ...state,
+        repeatState: action.repeatState,
+      };
     case reducerCases.SET_UPDATE_PLAYLISTS:
       return {
         ...state,
         updatePlaylists: true,
       };
-      case reducerCases.SET_VOLUME:
-        return {
-          ...state,
-          volume: action.volume,
-        };
-      case reducerCases.SET_PREVIOUS_VOLUME:
-        return {
-          ...state,
-          previousVolume: action.previousVolume,
-        };
-      case reducerCases.SET_MUTED:
-        return {
-          ...state,
-          isMuted: action.isMuted,
-        };
+    case reducerCases.SET_VOLUME:
+      return {
+        ...state,
+        volume: action.volume,
+      };
+    case reducerCases.SET_PREVIOUS_VOLUME:
+      return {
+        ...state,
+        previousVolume: action.previousVolume,
+      };
+    case reducerCases.SET_MUTED:
+      return {
+        ...state,
+        isMuted: action.isMuted,
+      };
     case reducerCases.SET_SEARCH_TERM:
       return {
         ...state,
-        searchTerm: action.searchTerm, // Update search term
+        searchTerm: action.searchTerm,
       };
-      case reducerCases.SET_PROGRESS:
-        return {
-          ...state,
-          progress: action.progress,
-        };
-  
-      case reducerCases.SET_DURATION:
-        return {
-          ...state,
-          duration: action.duration,
-        };
-        case reducerCases.SET_SELECTED_VIEW:
-          return {
-            ...state,
-            selectedView: action.selectedView,
-          };
-          case reducerCases.SET_SCHEDULED_PLAYLISTS:
-            return {
-              ...state,
-              scheduledPlaylists: action.scheduledPlaylists,
-            };
-          case reducerCases.ADD_TO_SCHEDULE:
-            return {
-              ...state,
-              scheduledPlaylists: [...state.scheduledPlaylists, action.playlist],
-            };
-            case reducerCases.MARK_PLAYLIST_PLAYED:
-              return {
-                ...state,
-                scheduledPlaylists: state.scheduledPlaylists.map((playlist) =>
-                  playlist.id === action.id ? { ...playlist, played: true } : playlist
-                ),
-              };
-              case reducerCases.ADD_PLAYLIST_TO_CACHE:
-                return {
-                  ...state,
-                  playlistsCache: {
-                    ...state.playlistsCache,
-                    [action.id]: action.playlist,
-                  },
-                };
-                case reducerCases.RESET_SCHEDULER:
-                  return {
-                    ...state,
-                    resetScheduler: true,
-                  };
-                case reducerCases.CLEAR_RESET_SCHEDULER:
-                  return {
-                    ...state,
-                    resetScheduler: false,
-                  };
+    case reducerCases.SET_PROGRESS:
+      return {
+        ...state,
+        progress: action.progress,
+      };
+    case reducerCases.SET_DURATION:
+      return {
+        ...state,
+        duration: action.duration,
+      };
+    case reducerCases.SET_SELECTED_VIEW:
+      return {
+        ...state,
+        selectedView: action.selectedView,
+      };
+    case reducerCases.SET_SCHEDULED_PLAYLISTS:
+      return {
+        ...state,
+        scheduledPlaylists: action.scheduledPlaylists,
+      };
+    case reducerCases.ADD_TO_SCHEDULE:
+      return {
+        ...state,
+        scheduledPlaylists: [...state.scheduledPlaylists, action.playlist],
+      };
+    case reducerCases.MARK_PLAYLIST_PLAYED:
+      return {
+        ...state,
+        scheduledPlaylists: state.scheduledPlaylists.map((playlist) =>
+          playlist.id === action.id ? { ...playlist, played: true } : playlist
+        ),
+      };
+    case reducerCases.ADD_PLAYLIST_TO_CACHE:
+      return {
+        ...state,
+        playlistsCache: {
+          ...state.playlistsCache,
+          [action.id]: action.playlist,
+        },
+      };
+    case reducerCases.RESET_SCHEDULER:
+      return {
+        ...state,
+        resetScheduler: true,
+      };
+    case reducerCases.CLEAR_RESET_SCHEDULER:
+      return {
+        ...state,
+        resetScheduler: false,
+      };
     default:
-        return state;
-}
+      return state;
+  }
 };
 
 export default reducer;
