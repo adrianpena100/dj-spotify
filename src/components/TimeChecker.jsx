@@ -26,7 +26,7 @@ export default function TimeChecker() {
   useEffect(() => {
     const checkTime = () => {
       const now = new Date();
-      const currentTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+      const currentTime = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
 
       scheduledPlaylists.forEach((playlist) => {
         if (playlist.time === currentTime && !playlist.played) {
@@ -38,7 +38,7 @@ export default function TimeChecker() {
       });
     };
 
-    const interval = setInterval(checkTime, 60000); // Check every minute
+    const interval = setInterval(checkTime, 1000); // Check every second
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [scheduledPlaylists, dispatch, playPlaylist]);
