@@ -163,9 +163,9 @@ export default function Scheduler() {
                   ))}
                 </select>
                 <select name="minute">
-                  {["00", "15", "30", "45"].map((m) => (
-                    <option key={m} value={m}>
-                      {m}
+                  {[...Array(60)].map((_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
                     </option>
                   ))}
                 </select>
