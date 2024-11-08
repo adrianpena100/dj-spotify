@@ -1,8 +1,8 @@
 // src/App.jsx
-
 import React, { useEffect } from "react";
 import Login from "./components/Login";
 import Spotify from "./components/Spotify";
+import TimeChecker from "./components/TimeChecker";
 import { reducerCases } from "./utils/Constants";
 import { useStateProvider } from "./utils/StateProvider";
 
@@ -21,5 +21,16 @@ export default function App() {
     document.title = "Spotify Scheduler";
   }, [dispatch]);
 
-  return <div>{token ? <Spotify /> : <Login />}</div>;
+  return (
+    <div>
+      {token ? (
+        <>
+          <Spotify />
+          <TimeChecker />
+        </>
+      ) : (
+        <Login />
+      )}
+    </div>
+  );
 }

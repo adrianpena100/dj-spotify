@@ -15,7 +15,7 @@ export default function CreatePlaylist({ showInput, setShowInput }) {
     if (newPlaylistName.trim() !== "") {
       const playlistName = newPlaylistName + " - PARTY";
       try {
-        await axios.post(
+        const response = await axios.post(
           `https://api.spotify.com/v1/me/playlists`,
           {
             name: playlistName,
@@ -29,9 +29,14 @@ export default function CreatePlaylist({ showInput, setShowInput }) {
           }
         );
 
+        const newPlaylist = response.data;
+
         // Reset the input
         setNewPlaylistName("");
         setShowInput(false);
+
+        // Dispatch the new playlist to the state
+        dispatch({ type: reducerCases.ADD_PLAYLIST, newPlaylist });
 
         // Fetch playlists again to update the sidebar
         dispatch({ type: reducerCases.SET_UPDATE_PLAYLISTS });
@@ -125,5 +130,3 @@ const StyledButton = styled.span`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
 `;
-
-

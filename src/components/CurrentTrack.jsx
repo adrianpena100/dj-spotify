@@ -6,33 +6,38 @@ import { reducerCases } from "../utils/Constants";
 import axios from "axios";
 
 export default function CurrentTrack() {
-  const [{ token, currentPlaying }, dispatch] = useStateProvider();
+  const [{ token, currentPlaying, queue }, dispatch] = useStateProvider();
 
   useEffect(() => {
     const getCurrentTrack = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/me/player/currently-playing",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      if (response.data !== "") {
-        const currentPlaying = {
-          id: response.data.item.id,
-          name: response.data.item.name,
-          artists: response.data.item.artists.map((artist) => artist.name), // Ensure artists is an array
-          image: response.data.item.album.images[2].url,
-        };
-        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+      if (queue.length > 0) {
+        const currentTrack = queue[0];
+        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentTrack });
       } else {
-        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
+        const response = await axios.get(
+          "https://api.spotify.com/v1/me/player/currently-playing",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (response.data !== "") {
+          const currentPlaying = {
+            id: response.data.item.id,
+            name: response.data.item.name,
+            artists: response.data.item.artists.map((artist) => artist.name),
+            image: response.data.item.album.images[2].url,
+          };
+          dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+        } else {
+          dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
+        }
       }
     };
     getCurrentTrack();
-  }, [token, dispatch]);
+  }, [token, dispatch, queue]);
 
   return (
     <Container>
@@ -44,7 +49,7 @@ export default function CurrentTrack() {
           <div className="track__info">
             <h4 className="track__info__track__name">{currentPlaying.name}</h4>
             <h6 className="track__info__track__artists">
-              {currentPlaying.artists.join(", ")}  {/* Join artists array */}
+              {currentPlaying.artists.join(", ")}
             </h6>
           </div>
         </div>
@@ -61,15 +66,15 @@ const Container = styled.div`
 
     &__image {
       img {
-        height: 64px; /* Adjusted the height */
-        width: 64px;  /* Adjusted the width */
+        height: 64px;
+        width: 64px;
       }
     }
 
     &__info {
       display: flex;
       flex-direction: column;
-      gap: 0.1rem; /* Reduced the gap between track name and artists */
+      gap: 0.1rem;
       &__track__name {
         color: white;
       }

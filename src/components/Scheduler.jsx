@@ -82,6 +82,7 @@ export default function Scheduler() {
     e.preventDefault();
     const hour = e.target.hour.value;
     const minute = e.target.minute.value;
+    const second = e.target.second.value;
     const ampm = e.target.ampm.value;
 
     // Convert to 24-hour time
@@ -95,7 +96,7 @@ export default function Scheduler() {
     const time = `${hour24.toString().padStart(2, "0")}:${minute.padStart(
       2,
       "0"
-    )}`;
+    )}:${second.padStart(2, "0")}`;
 
     // Check if shuffle is selected
     const shuffle = e.target.shuffle.checked;
@@ -163,9 +164,16 @@ export default function Scheduler() {
                   ))}
                 </select>
                 <select name="minute">
-                  {["00", "15", "30", "45"].map((m) => (
-                    <option key={m} value={m}>
-                      {m}
+                  {[...Array(60)].map((_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <select name="second">
+                  {[...Array(60)].map((_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
                     </option>
                   ))}
                 </select>
