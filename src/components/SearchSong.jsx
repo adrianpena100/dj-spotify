@@ -6,6 +6,7 @@ import { AiFillClockCircle } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import "../styles/SearchSong.css";
 
 export default function SearchSong({ searchTerm }) {
   const [{ token, deviceId }, dispatch] = useStateProvider();

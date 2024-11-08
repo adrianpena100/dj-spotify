@@ -1,11 +1,10 @@
-// src/components/Playlists.jsx
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
 import { BsThreeDotsVertical } from "react-icons/bs"; // Ellipsis icon
 import { MdOutlineDelete } from "react-icons/md"; // Delete icon
 import { reducerCases } from "../utils/Constants";
 import { useStateProvider } from "../utils/StateProvider";
+import "../styles/Playlists.css"; // Import the CSS file
 
 export default function Playlists() {
   const [{ token, playlists, updatePlaylists }, dispatch] = useStateProvider();
@@ -92,7 +91,7 @@ export default function Playlists() {
   }, [menuRef]);
 
   return (
-    <Container>
+    <div className="playlists-container">
       <ul>
         {playlists.map(({ name, id, image }) => {
           // Remove "- PARTY" from the displayed name
@@ -132,65 +131,6 @@ export default function Playlists() {
           );
         })}
       </ul>
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  color: #b3b3b3;
-  height: 100%;
-  overflow: hidden;
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    .playlist-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      position: relative;
-      transition: background-color 0.3s ease-in-out;
-      &:hover {
-        color: white;
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-      img {
-        height: 40px;
-        width: 40px;
-        object-fit: cover;
-        border-radius: 4px;
-      }
-      span {
-        font-size: 0.9rem;
-        color: inherit;
-      }
-      .ellipsis {
-        margin-left: auto;
-        cursor: pointer;
-      }
-      .menu {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: #333;
-        padding: 0.5rem;
-        border-radius: 4px;
-        button {
-          display: flex;
-          align-items: center;
-          background: none;
-          border: none;
-          color: white;
-          cursor: pointer;
-          gap: 0.5rem;
-          &:hover {
-            color: red;
-          }
-        }
-      }
-    }
-  }
-`;

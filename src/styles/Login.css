@@ -1,0 +1,54 @@
+/* Login.css */
+
+.login-container 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #121212; /* Spotify's dark grey */
+    gap: 5rem;
+
+    img {
+      height: 15vh; /* Adjusted the image size to be smaller */
+    }
+
+    div {
+      font-size: 2rem;
+      color: white;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 0.75rem 3rem;
+      border-radius: 3rem;
+      background-color: #1db954;
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  }
+
+  /* Mobile-specific styles */
+@media (max-width: 600px) {
+  .login-container {
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .login-container img {
+    height: 10vh; /* Smaller image size for mobile */
+  }
+
+  .login-container div {
+    font-size: 1.5rem; /* Smaller font size for mobile */
+  }
+
+  .login-container button {
+    padding: 0.5rem 2rem; /* Smaller padding for mobile */
+    font-size: 1rem; /* Smaller font size for mobile */
+  }
+}

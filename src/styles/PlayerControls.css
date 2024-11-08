@@ -1,0 +1,44 @@
+.player-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .controls div {
+    margin: 0 15px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .progress-container span {
+    font-size: 12px;
+    color: #b3b3b3;
+  }
+  
+  .progress-bar {
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background: #e0e0e0;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .progress {
+    position: absolute;
+    height: 100%;
+    background: #1ed760;
+  }

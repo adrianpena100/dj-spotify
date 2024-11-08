@@ -1,0 +1,105 @@
+/* src/styles/Navbar.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    height: 5vh; /* Hard Coded */
+    position: sticky;
+    top: 0;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .navbar--active {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .search__bar {
+    background-color: white;
+    width: 30%;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .search__bar input {
+    border: none;
+    height: 2rem;
+    width: 100%;
+  }
+  
+  .search__bar input:focus {
+    outline: none;
+  }
+  
+  .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .avatar {
+    background-color: black;
+    padding: 0.3rem 0.4rem;
+    padding-right: 1rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .avatar a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .avatar a svg {
+    font-size: 1.3rem;
+    background-color: #282828;
+    padding: 0.2rem;
+    border-radius: 1rem;
+  }
+  
+  .logout-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .logout-button svg {
+    font-size: 1.5rem;
+  }
+
+  /* Mobile-specific styles */
+@media (max-width: 600px) {
+  .login-container {
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .login-container img {
+    height: 10vh; /* Smaller image size for mobile */
+  }
+
+  .login-container div {
+    font-size: 1.5rem; /* Smaller font size for mobile */
+  }
+
+  .login-container button {
+    padding: 0.5rem 2rem; /* Smaller padding for mobile */
+    font-size: 1rem; /* Smaller font size for mobile */
+  }
+}

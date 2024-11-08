@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import DisplayPlaylists from "./DisplayPlaylists";
@@ -40,7 +39,6 @@ export default function Body({ headerBackground }) {
           );
 
           const data = response.data;
-
           const playlistImage =
             data.images?.[0]?.url || "https://i.vinylcloud.io/404.svg";
           const tracks =
@@ -69,10 +67,10 @@ export default function Body({ headerBackground }) {
             tracks: tracks,
           };
 
-          // Set the selected playlist
-          dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
+          // Set the selected playlist in the global state
+          dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist});
 
-          // Reset updatePlaylists flag
+          // Reset updatePlaylists flag if necessary
           if (updatePlaylists) {
             dispatch({
               type: reducerCases.SET_UPDATE_PLAYLISTS,
@@ -144,12 +142,11 @@ export default function Body({ headerBackground }) {
   }, [notification, dispatch]);
 
   return (
-    <Container headerBackground={headerBackground}>
+    <div className="container" style={{ backgroundColor: headerBackground ? "#000000dc" : "none" }}>
       {notification && <div className="notification">{notification}</div>}
       {searchTerm ? (
         <SearchSong searchTerm={searchTerm} />
       ) : selectedView ? (
-        // Render the selected view based on selectedView
         renderSelectedView()
       ) : selectedPlaylist ? (
         <DisplayPlaylists
@@ -158,7 +155,7 @@ export default function Body({ headerBackground }) {
           msToMinutesAndSeconds={msToMinutesAndSeconds}
         />
       ) : null}
-    </Container>
+    </div>
   );
 
   function renderSelectedView() {
@@ -167,88 +164,8 @@ export default function Body({ headerBackground }) {
         return <Scheduler />;
       case "QUEUE":
         return <Queue />;
-      // Add other views if any
       default:
         return null;
     }
   }
 }
-
-const Container = styled.div`
-  .playlist {
-    margin: 0 2rem;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    .image {
-      img {
-        height: 15rem;
-        width: 15rem;
-        object-fit: cover;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-      }
-    }
-    .details {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      color: #e0dede;
-      .title {
-        color: white;
-        font-size: 4rem;
-      }
-    }
-  }
-  .list {
-    .header-row {
-      display: grid;
-      grid-template-columns: 0.3fr 3fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
-      margin: 1rem 0 0 0;
-      color: #dddcdc;
-      position: sticky;
-      top: 15vh;
-      padding: 1rem 3rem;
-      transition: 0.3s ease-in-out;
-      background-color: ${({ headerBackground }) =>
-        headerBackground ? "#000000dc" : "none"};
-    }
-    .tracks {
-      margin: 0 2rem;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 5rem;
-      .row {
-        padding: 0.5rem 1rem;
-        display: grid;
-        grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.7);
-        }
-        .col {
-          display: flex;
-          align-items: center;
-          color: #dddcdc;
-          img {
-            height: 40px;
-            width: 40px;
-            object-fit: cover;
-          }
-        }
-        .detail {
-          display: flex;
-          gap: 1rem;
-          .info {
-            display: flex;
-            flex-direction: column;
-          }
-        }
-      }
-      .no-tracks {
-        padding: 2rem;
-        text-align: center;
-        color: #999;
-        font-size: 1.2rem;
-      }
-    }
-  }
-`;

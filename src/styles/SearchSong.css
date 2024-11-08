@@ -1,0 +1,63 @@
+/* SearchSong.css */
+.container {
+  .list {
+    .header-row {
+      display: grid;
+      grid-template-columns: 0.3fr 3fr 2fr 0.1fr 0.1fr;
+      margin: 1rem 0 0 0;
+      color: #dddcdc;
+      position: sticky;
+      top: 15vh;
+      padding: 1rem 3rem;
+      transition: 0.3s ease-in-out;
+      background-color: var(--header-background-color, none);
+    }
+  
+    .tracks {
+      margin: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5rem;
+    }
+  
+    .tracks .row {
+      padding: 0.5rem 1rem;
+      display: grid;
+      grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr;
+      transition: background-color 0.3s;
+    }
+  
+    .tracks .row:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  
+    .tracks .row .col {
+      display: flex;
+      align-items: center;
+      color: #dddcdc;
+    }
+  
+    .tracks .row .col img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+    }
+  
+    .tracks .row .detail {
+      display: flex;
+      gap: 1rem;
+    }
+  
+    .tracks .row .detail .info {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .tracks .no-tracks {
+      padding: 2rem;
+      text-align: center;
+      color: #999;
+      font-size: 1.2rem;
+    }
+  }
+}

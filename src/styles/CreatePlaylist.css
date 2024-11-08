@@ -1,0 +1,57 @@
+/* CreatePlaylist.css */
+
+.styled-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    height: 20px; /* Match the button height */
+    background-color: #2c2c2c;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .styled-input:focus {
+    background-color: #3c3c3c;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .styled-input::placeholder {
+    color: #bbb;
+  }
+  
+  .styled-button {
+    background-color: #1db954;
+    padding: 0.5rem 0.75rem;
+    height: 20px; /* Match the input field height */
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .styled-button:hover {
+    background-color: #1aa34a;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 600px) {
+    .styled-input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .styled-button {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+  }

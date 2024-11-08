@@ -1,9 +1,9 @@
 // CurrentTrack.jsx
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import axios from "axios";
+import "../styles/CurrentTrack.css";  // Import the new CSS file
 
 export default function CurrentTrack() {
   const [{ token, currentPlaying }, dispatch] = useStateProvider();
@@ -23,7 +23,7 @@ export default function CurrentTrack() {
         const currentPlaying = {
           id: response.data.item.id,
           name: response.data.item.name,
-          artists: response.data.item.artists.map((artist) => artist.name), // Ensure artists is an array
+          artists: response.data.item.artists.map((artist) => artist.name),
           image: response.data.item.album.images[2].url,
         };
         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
@@ -35,7 +35,7 @@ export default function CurrentTrack() {
   }, [token, dispatch]);
 
   return (
-    <Container>
+    <div className="container">
       {currentPlaying && (
         <div className="track">
           <div className="track__image">
@@ -44,38 +44,11 @@ export default function CurrentTrack() {
           <div className="track__info">
             <h4 className="track__info__track__name">{currentPlaying.name}</h4>
             <h6 className="track__info__track__artists">
-              {currentPlaying.artists.join(", ")}  {/* Join artists array */}
+              {currentPlaying.artists.join(", ")}
             </h6>
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  .track {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    &__image {
-      img {
-        height: 64px; /* Adjusted the height */
-        width: 64px;  /* Adjusted the width */
-      }
-    }
-
-    &__info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem; /* Reduced the gap between track name and artists */
-      &__track__name {
-        color: white;
-      }
-      &__track__artists {
-        color: #b3b3b3;
-      }
-    }
-  }
-`;

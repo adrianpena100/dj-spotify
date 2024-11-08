@@ -1,6 +1,4 @@
-// src/components/Sidebar.jsx
 import React, { useState } from "react";
-import styled from "styled-components";
 import { MdHomeFilled } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import { AiOutlineOrderedList } from "react-icons/ai"; // Icon for Queue
@@ -8,6 +6,7 @@ import Playlists from "./Playlists";
 import CreatePlaylist from "./CreatePlaylist";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import '../styles/Sidebar.css'; // Import the CSS file
 
 export default function Sidebar() {
   const [, dispatch] = useStateProvider();
@@ -39,7 +38,7 @@ export default function Sidebar() {
   };
 
   return (
-    <Container>
+    <div className="sidebar-container">
       <div className="top__links">
         <div className="logo">
           <img
@@ -66,44 +65,6 @@ export default function Sidebar() {
         </ul>
       </div>
       <Playlists />
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  background-color: black;
-  color: #b3b3b3;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  .top__links {
-    display: flex;
-    flex-direction: column;
-    .logo {
-      text-align: center;
-      margin: 1rem 0;
-      img {
-        max-inline-size: 80%;
-        block-size: auto;
-      }
-    }
-    ul {
-      list-style-type: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-      li {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        cursor: pointer;
-        transition: 0.3s ease-in-out;
-        &:hover {
-          color: white;
-        }
-      }
-    }
-  }
-`;

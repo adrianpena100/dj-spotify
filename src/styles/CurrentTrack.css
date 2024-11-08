@@ -1,0 +1,51 @@
+/* CurrentTrack.css */
+.container{
+  .track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .track__image img {
+    height: 64px; /* Adjusted the height */
+    width: 64px;  /* Adjusted the width */
+  }
+  
+  .track__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem; /* Reduced the gap between track name and artists */
+  }
+  
+  .track__info__track__name {
+    color: white;
+  }
+  
+  .track__info__track__artists {
+    color: #b3b3b3;
+  }
+}
+
+  @media (max-width: 600px) {
+    .track {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .track__image img {
+      height: 48px;
+      width: 48px;
+    }
+
+    .track__info {
+      align-items: flex-start;
+    }
+
+    .track__info__track__name {
+      font-size: 0.9rem;
+    }
+
+    .track__info__track__artists {
+      font-size: 0.8rem;
+    }
+  }
