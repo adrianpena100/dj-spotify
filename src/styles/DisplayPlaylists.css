@@ -36,7 +36,8 @@
       top: 15vh;
       padding: 1rem 3rem;
       transition: 0.3s ease-in-out;
-      background-color: var(--header-background-color, none);
+      /*background-color: var(--header-background-color, none); */
+      background-color: ${({ headerBackground}) => headrBackground ? "#000000dc" : "none"};
     }
     
     /* Tracks list */

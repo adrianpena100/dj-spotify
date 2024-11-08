@@ -67,8 +67,8 @@ export default function Body({ headerBackground }) {
             tracks: tracks,
           };
 
-          // Set the selected playlist in the global state
-          dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist});
+          // Set the selected playlist
+          dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist });
 
           // Reset updatePlaylists flag if necessary
           if (updatePlaylists) {

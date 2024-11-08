@@ -37,18 +37,18 @@
   .login-container {
     gap: 2rem;
     padding: 1rem;
-  }
 
-  .login-container img {
-    height: 10vh; /* Smaller image size for mobile */
-  }
+    img {
+      height: 10vh; /* Smaller image size for mobile */
+    }
 
-  .login-container div {
-    font-size: 1.5rem; /* Smaller font size for mobile */
-  }
+    div {
+      font-size: 1.5rem; /* Smaller font size for mobile */
+    }
 
-  .login-container button {
-    padding: 0.5rem 2rem; /* Smaller padding for mobile */
-    font-size: 1rem; /* Smaller font size for mobile */
+    button {
+      padding: 0.5rem 2rem; /* Smaller padding for mobile */
+      font-size: 1rem; /* Smaller font size for mobile */
+    }
   }
 }
