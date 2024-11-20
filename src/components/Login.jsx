@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const handleClick = async () => {
     const client_id = "69fd466f76c84dc9b965ac235c3c97b7";
     const redirect_uri = "http://localhost:3000/callback";
@@ -22,16 +25,25 @@ export default function Login() {
       " "
     )}&response_type=token&show_dialog=true`;
   };
+
+  const handleGuestClick = () => {
+    navigate("/guest-room-code");
+  };
+
   return (
     <Container>
-      <img
+      <Logo
         src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_White.png"
         alt="spotify"
       />
-      <div>Spotify Live DJ</div>
-      <button onClick={handleClick}>Login With Spotify</button>
+      <Title>Spotify Live DJ</Title>
+      <ButtonGroup>
+      <SpotifyButton onClick={handleClick}>Login With Spotify</SpotifyButton>
+      <GuestButton onClick={handleGuestClick}>Continue as Guest</GuestButton>
+      </ButtonGroup>
     </Container>
   );
+
 }
 
 const Container = styled.div`
@@ -41,26 +53,73 @@ const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: #121212; /* Changed to Spotify's dark grey */
-  gap: 5rem;
+  background-color: #121212; /* Spotify's dark grey */
+  gap: 2rem; /* Reduced gap for better spacing */
+`;
 
-  img {
-    height: 15vh; /* Adjusted the image size to be smaller */
+const Logo = styled.img`
+  height: 15vh;
+`;
+
+const Title = styled.div`
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between buttons */
+
+  /* Remove fixed width to allow buttons to size based on content */
+  /* Alternatively, set a min-width instead of fixed width */
+  /* button {
+    width: 250px; 
+  } */
+`;
+
+/* SpotifyButton styled component */
+const SpotifyButton = styled.button`
+  padding: 0.75rem 2.5rem; /* Adjusted padding */
+  border-radius: 3rem;
+  background-color: #1db954; /* Spotify Green */
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center; /* Ensure text is centered */
+
+  &:hover {
+    background-color: #1ed760; /* Lighter green on hover */
   }
-
-  div {
-    font-size: 2rem; /* Adjust as needed */
-    color: white; /* Set the font color to white */
-    font-weight: bold;
+  
+  @media (max-width: 600px) {
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
   }
+`;
 
-  button {
-    padding: 0.75rem 3rem; /* Reduced the size of the button */
-    border-radius: 3rem;
-    background-color: #1db954;
-    color: white;
-    border: none;
-    font-size: 1.2rem; /* Reduced the font size */
-    cursor: pointer;
+/* GuestButton styled component */
+const GuestButton = styled.button`
+  padding: 0.75rem 2.5rem; /* Adjusted padding */
+  border-radius: 3rem;
+  background-color: #6c757d; /* Grey background */
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center; /* Ensure text is centered */
+
+  &:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+  }
+  @media (max-width: 600px) {
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
   }
 `;
