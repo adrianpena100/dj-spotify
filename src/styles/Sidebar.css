@@ -1,0 +1,45 @@
+/* SContainer.css */
+
+.SContainer {
+    background-color: black;
+    color: #b3b3b3;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.SContainer .top__links {
+    display: flex;
+    flex-direction: column;
+}
+
+.SContainer .top__links .logo {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.SContainer .top__links .logo img {
+    max-inline-size: 80%;
+    block-size: auto;
+}
+
+.SContainer .top__links ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.SContainer .top__links ul li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.SContainer .top__links ul li:hover {
+    color: white;
+}

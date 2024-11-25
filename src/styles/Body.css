@@ -1,0 +1,92 @@
+/* Body.css */
+
+.Container .playlist {
+    margin: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.Container .playlist .image img {
+    height: 15rem;
+    width: 15rem;
+    object-fit: cover;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.Container .playlist .details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #e0dede;
+}
+
+.Container .playlist .details .title {
+    color: white;
+    font-size: 4rem;
+}
+
+.Container .list .header-row {
+    display: grid;
+    grid-template-columns: 0.3fr 3fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
+    margin: 1rem 0 0 0;
+    color: #dddcdc;
+    position: sticky;
+    top: 15vh;
+    padding: 1rem 3rem;
+    transition: 0.3s ease-in-out;
+}
+
+.Container .list .header-row.dark {
+    background-color: #000000dc;
+}
+
+.Container .list .header-row.light {
+    background-color: none;
+}
+
+.Container .list .tracks {
+    margin: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5rem;  
+}
+
+.Container .list .tracks .row{
+    padding: 0.5rem 1rem;
+    display: grid;
+    grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */  
+}
+
+.Container .list .tracks .row:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.Container .list .tracks .row .col {
+    display: flex;
+    align-items: center;
+    color: #dddcdc;
+}
+
+.Container .list .tracks .row .col img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+
+.Container .list .tracks .row .detail{
+    display: flex;
+    gap: 1rem;
+}
+
+.Container .list .tracks .row .detail .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.Container .list .tracks .no-tracks {
+    padding: 2rem;
+    text-align: center;
+    color: #999;
+    font-size: 1.2rem;
+}

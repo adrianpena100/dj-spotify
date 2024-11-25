@@ -1,0 +1,69 @@
+/* PlContainer */
+
+.PlContainer {
+    color: #b3b3b3;
+    height: 100%;
+    overflow: hidden;
+}
+
+.PlContainer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.PlContainer ul .playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.PlContainer ul .playlist-item:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.PlContainer ul .playlist-item img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.PlContainer ul .playlist-item span {
+    font-size: 0.9rem;
+    color: inherit;
+}
+
+.PlContainer ul .playlist-item .ellipsis {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.PlContainer ul .playlist-item .menu{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.PlContainer ul .playlist-item .menu button{
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.PlContainer ul .playlist-item .menu button:hover {
+    color: red;
+}

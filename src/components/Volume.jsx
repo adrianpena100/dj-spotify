@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useCallback } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 import { GoUnmute, GoMute } from "react-icons/go"; // Import icons
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import "../styles/Volume.css";
 
 export default function Volume() {
   const [{ token, deviceId, volume, isMuted, previousVolume }, dispatch] = useStateProvider();
@@ -61,7 +62,7 @@ export default function Volume() {
   }, [isMuted, previousVolume, volume, dispatch, setVolumeOnSpotify]);
 
   return (
-    <Container>
+    <div className="VContainer">
       <button onClick={toggleMute}>
         {isMuted ? <GoMute size={24} color="white" /> : <GoUnmute size={24} color="white" />}
       </button>
@@ -73,55 +74,55 @@ export default function Volume() {
         min={0}
         max={100}
       />
-    </Container>
+    </div>
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
 
-  button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
+//   button {
+//     background: none;
+//     border: none;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//   }
 
-  input {
-    width: 15rem;
-    border-radius: 2rem;
-    height: 0.5rem;
-    background: white; /* White track */
-    -webkit-appearance: none;
-    appearance: none;
+//   input {
+//     width: 15rem;
+//     border-radius: 2rem;
+//     height: 0.5rem;
+//     background: white; /* White track */
+//     -webkit-appearance: none;
+//     appearance: none;
 
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #1db954; /* Spotify green */
-      cursor: pointer;
-    }
+//     &::-webkit-slider-thumb {
+//       -webkit-appearance: none;
+//       appearance: none;
+//       width: 12px;
+//       height: 12px;
+//       border-radius: 50%;
+//       background: #1db954; /* Spotify green */
+//       cursor: pointer;
+//     }
 
-    &::-moz-range-thumb {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #1db954; /* Spotify green */
-      cursor: pointer;
-    }
+//     &::-moz-range-thumb {
+//       width: 12px;
+//       height: 12px;
+//       border-radius: 50%;
+//       background: #1db954; /* Spotify green */
+//       cursor: pointer;
+//     }
 
-    &::-ms-thumb {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #1db954; /* Spotify green */
-      cursor: pointer;
-    }
-  }
-`;
+//     &::-ms-thumb {
+//       width: 12px;
+//       height: 12px;
+//       border-radius: 50%;
+//       background: #1db954; /* Spotify green */
+//       cursor: pointer;
+//     }
+//   }
+// `;

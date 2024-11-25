@@ -1,5 +1,6 @@
 import React from 'react';
 import { AiFillClockCircle } from 'react-icons/ai';
+import '../styles/Body.css';
 
 export default function DisplayPlaylists({ selectedPlaylist, playTrack, msToMinutesAndSeconds }) {
   return (
