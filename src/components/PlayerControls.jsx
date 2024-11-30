@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 import {
   BsFillPlayCircleFill,
   BsFillPauseCircleFill,
@@ -10,6 +10,7 @@ import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import "../styles/PlayerControls.css";
 
 export default function PlayerControls() {
   const [
@@ -228,7 +229,7 @@ export default function PlayerControls() {
   };
 
   return (
-    <Container>
+    <div className="PCContainer">
       <div className="controls">
         <div className="shuffle">
           <BsShuffle
@@ -268,70 +269,70 @@ export default function PlayerControls() {
         </div>
         <span>{formatTime(duration || 0)}</span> {/* Default to 0 if duration is null */}
       </div>
-    </Container>
+    </div>
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 1rem;
+// const Container = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+//   gap: 1rem;
 
-  .controls {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
+//   .controls {
+//     display: flex;
+//     align-items: center;
+//     gap: 2rem;
+//   }
 
-  .progress-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    max-width: 500px;
-  }
+//   .progress-container {
+//     display: flex;
+//     align-items: center;
+//     gap: 1rem;
+//     width: 100%;
+//     max-width: 500px;
+//   }
 
-  .progress-bar {
-    flex: 1;
-    height: 8px;
-    background-color: #b3b3b3;
-    cursor: pointer;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+//   .progress-bar {
+//     flex: 1;
+//     height: 8px;
+//     background-color: #b3b3b3;
+//     cursor: pointer;
+//     border-radius: 4px;
+//     overflow: hidden;
+//   }
 
-  .progress {
-    height: 100%;
-    background-color: #1ed760;
-  }
+//   .progress {
+//     height: 100%;
+//     background-color: #1ed760;
+//   }
 
-  .progress-container span {
-    color: white; /* Change the time color to white */
-  }
+//   .progress-container span {
+//     color: white; /* Change the time color to white */
+//   }
 
-  svg {
-    color: #b3b3b3;
-    transition: 0.2s ease-in-out;
-    cursor: pointer;
-    &:hover {
-      color: white;
-    }
-  }
+//   svg {
+//     color: #b3b3b3;
+//     transition: 0.2s ease-in-out;
+//     cursor: pointer;
+//     &:hover {
+//       color: white;
+//     }
+//   }
 
-  .state svg {
-    color: white;
-  }
+//   .state svg {
+//     color: white;
+//   }
 
-  .previous,
-  .next,
-  .state {
-    font-size: 2rem;
-  }
+//   .previous,
+//   .next,
+//   .state {
+//     font-size: 2rem;
+//   }
 
-  .shuffle,
-  .repeat svg {
-    font-size: 1.5rem;
-  }
-`;
+//   .shuffle,
+//   .repeat svg {
+//     font-size: 1.5rem;
+//   }
+// `;

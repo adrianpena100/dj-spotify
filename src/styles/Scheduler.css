@@ -1,0 +1,151 @@
+/* Scheduler.css */
+
+.SchContainer {
+    padding: 2rem;
+    color: white;
+    overflow: hidden;
+}
+
+.SchContainer h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.SchContainer p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.SchContainer .playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 2rem;
+}
+
+.SchContainer .playlist-card-outer {
+    opacity: 0;
+    transform: translateX(100%); /* Start off-screen */
+    animation: flyIn 0.5s ease-in-out forwards; /* Fly-in animation */
+    animation-fill-mode: forwards; /* Ensure it stays in the final position after animation */
+    transition: transform 0.3s ease-in-out; /* Allows animation to run smoothly */
+}
+
+.SchContainer .playlist-card-outer.move-right {
+    animation: moveRight 0.5s forwards;
+}
+
+.SchContainer .playlist-card-inner {
+    text-align: center;
+    transition: transform 0.3s ease-in-out; /* Enables hover scaling */
+}
+
+.SchContainer .playlist-card-inner img {
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out; /* Enables hover scaling */
+}
+
+.SchContainer .playlist-card-inner h3 {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.SchContainer .playlist-card-inner:hover{
+    transform: scale(1.15); /* Scale up when hovered */
+}
+
+@keyframes flyIn{
+    from {
+        transform: translateX(100%); /* Fly in from the right */
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0); /* End in place */
+        opacity: 1;
+    }
+} 
+
+
+@keyframes moveRight { 
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.SchContainer .scheduler-container {
+    position: relative; /* To position the back button */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.SchContainer .scheduler-container .back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.SchContainer .scheduler-container .selected-playlist{
+    flex: 1 1 40%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SchContainer .scheduler-container .selected-playlist img{
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+}
+
+.SchContainer .scheduler-container .selected-playlist h3{
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 400px;
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container p {
+    color: #ccc;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container ul li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container ul li .track-name {
+    font-weight: bold;
+}
+
+.SchContainer .scheduler-container .selected-playlist .tracks-container ul li .track-artists {
+    font-size: 0.9rem;
+    color: #ccc;
+}

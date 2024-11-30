@@ -1,0 +1,60 @@
+/* Queue.css */
+
+.QContainer {
+    padding: 2rem;
+    color: white;
+}
+
+.QContainer h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.QContainer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.QContainer ul li{
+    background-color: #282828;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.QContainer ul li .playlist-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.QContainer ul li .playlist-info img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+}
+
+.QContainer ul li .playlist-info h3 {
+    margin: 0;
+}
+
+.QContainer ul li .playlist-info p {
+    margin: 0.5rem 0 0;
+    color: #b3b3b3;
+}
+
+.QContainer ul li .playlist-info .played-label {
+    color: #1db954;
+    font-weight: bold;
+}
+
+.QContainer ul li .playlist-info .pending-label {
+    color: #ffa500;
+    font-weight: bold;
+}
+
+.QContainer p {
+    font-size: 1.2rem;
+}

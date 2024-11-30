@@ -1,0 +1,26 @@
+/* CurrentTrack.css */
+
+.CTContainer .track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.CTContainer .track__image img {
+    height: 64px;
+    width: 64px;
+}
+
+.CTContainer .track__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.CTContainer .track__info__track__name {
+    color: white;
+}
+
+.CTContainer .track__info__track__artists {
+    color: #b3b3b3;
+}

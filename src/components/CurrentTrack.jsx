@@ -1,9 +1,10 @@
 // CurrentTrack.jsx
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import axios from "axios";
+// import styled from "styled-components";
+import "../styles/CurrentTrack.css";
 
 export default function CurrentTrack() {
   const [{ token, currentPlaying, queue }, dispatch] = useStateProvider();
@@ -40,7 +41,7 @@ export default function CurrentTrack() {
   }, [token, dispatch, queue]);
 
   return (
-    <Container>
+    <div className="CTContainer">
       {currentPlaying && (
         <div className="track">
           <div className="track__image">
@@ -54,33 +55,33 @@ export default function CurrentTrack() {
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 }
 
-const Container = styled.div`
-  .track {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+// const Container = styled.div`
+//   .track {
+//     display: flex;
+//     align-items: center;
+//     gap: 1rem;
 
-    &__image {
-      img {
-        height: 64px;
-        width: 64px;
-      }
-    }
+//     &__image {
+//       img {
+//         height: 64px;
+//         width: 64px;
+//       }
+//     }
 
-    &__info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-      &__track__name {
-        color: white;
-      }
-      &__track__artists {
-        color: #b3b3b3;
-      }
-    }
-  }
-`;
+//     &__info {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 0.1rem;
+//       &__track__name {
+//         color: white;
+//       }
+//       &__track__artists {
+//         color: #b3b3b3;
+//       }
+//     }
+//   }
+// `;

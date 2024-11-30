@@ -1,8 +1,8 @@
 // src/components/Queue.jsx
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { useStateProvider } from '../utils/StateProvider';
-
+import "../styles/Queue.css";
 export default function Queue() {
   const [{ scheduledPlaylists }] = useStateProvider();
 
@@ -14,7 +14,7 @@ export default function Queue() {
   });
 
   return (
-    <Container>
+    <div className="QContainer">
       <h2>Scheduled Playlists</h2>
       {sortedPlaylists && sortedPlaylists.length > 0 ? (
         <ul>
@@ -38,65 +38,65 @@ export default function Queue() {
       ) : (
         <p>No playlists scheduled.</p>
       )}
-    </Container>
+    </div>
   );
 }
 
-const Container = styled.div`
-  padding: 2rem;
-  color: white;
+// const Container = styled.div`
+//   padding: 2rem;
+//   color: white;
 
-  h2 {
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-  }
+//   h2 {
+//     margin-bottom: 2rem;
+//     font-size: 2.5rem;
+//   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
+//   ul {
+//     list-style-type: none;
+//     padding: 0;
 
-    li {
-      background-color: #282828;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
+//     li {
+//       background-color: #282828;
+//       padding: 1rem;
+//       margin-bottom: 1rem;
+//       border-radius: 8px;
+//       display: flex;
+//       align-items: center;
 
-      .playlist-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
+//       .playlist-info {
+//         display: flex;
+//         align-items: center;
+//         gap: 1rem;
 
-        img {
-          width: 64px;
-          height: 64px;
-          border-radius: 8px;
-        }
+//         img {
+//           width: 64px;
+//           height: 64px;
+//           border-radius: 8px;
+//         }
 
-        h3 {
-          margin: 0;
-        }
+//         h3 {
+//           margin: 0;
+//         }
 
-        p {
-          margin: 0.5rem 0 0;
-          color: #b3b3b3;
-        }
+//         p {
+//           margin: 0.5rem 0 0;
+//           color: #b3b3b3;
+//         }
 
-        .played-label {
-          color: #1db954;
-          font-weight: bold;
-        }
+//         .played-label {
+//           color: #1db954;
+//           font-weight: bold;
+//         }
 
-        .pending-label {
-          color: #ffa500;
-          font-weight: bold;
-        }
-      }
-    }
-  }
+//         .pending-label {
+//           color: #ffa500;
+//           font-weight: bold;
+//         }
+//       }
+//     }
+//   }
 
-  p {
-    font-size: 1.2rem;
-  }
-`;
+//   p {
+//     font-size: 1.2rem;
+//   }
+// `;

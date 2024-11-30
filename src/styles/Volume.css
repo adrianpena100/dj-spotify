@@ -1,0 +1,50 @@
+/* Volume.css */
+
+.VContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.VContainer button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.VContainer input {
+    width: 15rem;
+    border-radius: 2rem;
+    height: 0.5rem;
+    background: white; /* White track */
+    -webkit-appearance: none;
+    appearance: none;   
+}
+
+.VContainer input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1db954; /* Spotify green */
+    cursor: pointer;
+}
+
+.VContainer input::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1db954; /* Spotify green */
+    cursor: pointer;
+}
+
+.VContainer input::-ms-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1db954; /* Spotify green */
+    cursor: pointer;
+}

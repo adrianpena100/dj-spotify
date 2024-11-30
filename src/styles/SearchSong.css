@@ -1,0 +1,66 @@
+/* SearchSong.css */
+
+.SSContainer .list .header-row {
+    display: grid;
+    grid-template-columns: 0.3fr 3fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */
+    margin: 1rem 0 0 0;
+    color: #dddcdc;
+    position: sticky;
+    top: 15vh;
+    padding: 1rem 3rem;
+    transition: 0.3s ease-in-out;
+}
+
+.SSContainer .list .header-row.dark {
+    background-color: #000000dc;
+}
+
+.SSContainer .list .header-row.light {
+    background-color: none;
+}
+
+.SSContainer .list .tracks {
+    margin: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5rem;  
+}
+
+.SSContainer .list .tracks .row{
+    padding: 0.5rem 1rem;
+    display: grid;
+    grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */  
+}
+
+.SSContainer .list .tracks .row:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.SSContainer .list .tracks .row .col {
+    display: flex;
+    align-items: center;
+    color: #dddcdc;
+}
+
+.SSContainer .list .tracks .row .col img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+
+.SSContainer .list .tracks .row .detail{
+    display: flex;
+    gap: 1rem;
+}
+
+.SSContainer .list .tracks .row .detail .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.SSContainer .list .tracks .no-tracks {
+    padding: 2rem;
+    text-align: center;
+    color: #999;
+    font-size: 1.2rem;
+}
