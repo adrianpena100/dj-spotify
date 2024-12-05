@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // import styled from "styled-components";
 import "../styles/Login.css";
 
 export default function Login() {
+  //const navigate = useNavigate();
+
   const handleClick = async () => {
     const client_id = "69fd466f76c84dc9b965ac235c3c97b7";
     const redirect_uri = "http://localhost:3000/callback";
@@ -23,6 +26,7 @@ export default function Login() {
       " "
     )}&response_type=token&show_dialog=true`;
   };
+
   return (
     <div className="LgContainer">
       <img
@@ -31,6 +35,7 @@ export default function Login() {
       />
       <div>Spotify Live DJ</div>
       <button onClick={handleClick}>Login With Spotify</button>
+      <Link to="/guest-entry" className="button-guest-link"> Join as a Guest</Link>
     </div>
   );
 }

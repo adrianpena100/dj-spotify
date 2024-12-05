@@ -4,15 +4,18 @@ import React, { useState } from "react";
 import { MdHomeFilled } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import { AiOutlineOrderedList } from "react-icons/ai"; // Icon for Queue
+import { AiOutlineMail } from "react-icons/ai"; // Icon for Messages
 import Playlists from "./Playlists";
 import CreatePlaylist from "./CreatePlaylist";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import "../styles/Sidebar.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const [, dispatch] = useStateProvider();
   const [showInput, setShowInput] = useState(false);
+  const navigate = useNavigate();
 
   const handleHomeClick = () => {
     dispatch({
@@ -38,6 +41,10 @@ export default function Sidebar() {
     // Optionally reset the selected playlist
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null });
   };
+  
+  const handleMessagesClick = () => {
+    navigate("/host-messages");
+  };
 
   return (
     <div className="SContainer">
@@ -60,6 +67,10 @@ export default function Sidebar() {
           <li onClick={handleQueueClick}>
             <AiOutlineOrderedList />
             <span>Queue</span>
+          </li>
+          <li onClick={handleMessagesClick}>
+            <AiOutlineMail />
+            <span>Requests</span>
           </li>
           <li>
             <CreatePlaylist showInput={showInput} setShowInput={setShowInput} />

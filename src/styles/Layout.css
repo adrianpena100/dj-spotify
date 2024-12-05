@@ -1,0 +1,15 @@
+/* src/styles/Layout.css */
+
+.layout-container {
+    display: flex;
+  }
+  
+  .main-content {
+    margin-left: 240px; /* Width of the Sidebar */
+    padding: 2rem;
+    flex: 1;
+    background-color: #121212; /* Matching the Login background */
+    min-height: 100vh;
+    color: white;
+  }
+  

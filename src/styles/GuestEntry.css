@@ -1,0 +1,51 @@
+/* src/styles/GuestEntry.css */
+
+.GuestContainer {
+    background-color: #121212;
+    color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center; /* Center the content */
+  }
+  
+  .GuestContainer h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .GuestContainer form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .GuestContainer input {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1rem;
+  }
+  
+  .GuestContainer button {
+    padding: 0.75rem 1rem;
+    border-radius: 3rem;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .GuestContainer button:hover {
+    background-color: #5a6268;
+  }
+  
+  .message {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #ffc107; /* Amber color for messages */
+  }
+  
