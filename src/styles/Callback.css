@@ -1,0 +1,12 @@
+/* src/styles/Callback.css */
+
+.callback-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    background-color: #121212;
+    font-size: 1.5rem;
+  }
+  

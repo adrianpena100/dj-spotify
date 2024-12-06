@@ -4,14 +4,31 @@
     background-color: black;
     color: #b3b3b3;
     display: flex;
+    flex-shrink: 0; 
     flex-direction: column;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 250px;
 }
 
 .SContainer .top__links {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+}
+
+.SContainer .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the logo vertically */
+    text-align: center; /* Center the logo horizontally */
+    height: 150px;
+    margin: 1rem 0; /* Adjust the spacing around the logo */
+}
+
+.SContainer .spotify-logo {
+    width: 100px;  /* Adjust to desired size */
+    height: auto;  /* Maintain aspect ratio */
 }
 
 .SContainer .top__links .logo {

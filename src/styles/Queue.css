@@ -1,8 +1,11 @@
 /* Queue.css */
 
 .QContainer {
+    flex: 1;
     padding: 2rem;
     color: white;
+    background-color: #181818;
+    box-sizing: border-box;
 }
 
 .QContainer h2 {

@@ -1,53 +1,59 @@
 // src/components/Sidebar.jsx
 import React, { useState } from "react";
-// import styled from "styled-components";
 import { MdHomeFilled } from "react-icons/md";
 import { RiCalendarScheduleLine } from "react-icons/ri";
-import { AiOutlineOrderedList } from "react-icons/ai"; // Icon for Queue
+import { AiOutlineOrderedList, AiOutlineMail } from "react-icons/ai"; 
 import Playlists from "./Playlists";
 import CreatePlaylist from "./CreatePlaylist";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import "../styles/Sidebar.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const [, dispatch] = useStateProvider();
   const [showInput, setShowInput] = useState(false);
+  const navigate = useNavigate();
 
   const handleHomeClick = () => {
+    navigate("/");
     dispatch({
       type: reducerCases.SET_PLAYLIST_ID,
-      selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M", // Your default playlist ID
+      selectedPlaylistId: "37i9dQZF1DXcBWIGoYBM5M",
     });
-    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
-    dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: null }); // Reset the view
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" });
+    dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: null });
   };
 
   const handleSchedulerClick = () => {
+    navigate("/scheduler");
     dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: "SCHEDULER" });
-    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
-    // Optionally reset the selected playlist
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" });
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null });
-    // Dispatch an action to reset the scheduler state
     dispatch({ type: reducerCases.RESET_SCHEDULER });
   };
 
   const handleQueueClick = () => {
+    navigate("/queue");
     dispatch({ type: reducerCases.SET_SELECTED_VIEW, selectedView: "QUEUE" });
-    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" }); // Clear search term
-    // Optionally reset the selected playlist
+    dispatch({ type: reducerCases.SET_SEARCH_TERM, searchTerm: "" });
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null });
+  };
+
+  const handleMessagesClick = () => {
+    navigate("/host-messages");
   };
 
   return (
     <div className="SContainer">
+      <div className="logo-container">
+        <img
+          src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png"
+          alt="Spotify"
+          className="spotify-logo"
+        />
+      </div>
       <div className="top__links">
-        <div className="logo">
-          <img
-            src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png"
-            alt="spotify"
-          />
-        </div>
         <ul>
           <li onClick={handleHomeClick}>
             <MdHomeFilled />
@@ -61,6 +67,10 @@ export default function Sidebar() {
             <AiOutlineOrderedList />
             <span>Queue</span>
           </li>
+          <li onClick={handleMessagesClick}>
+            <AiOutlineMail />
+            <span>Requests</span>
+          </li>
           <li>
             <CreatePlaylist showInput={showInput} setShowInput={setShowInput} />
           </li>
@@ -70,6 +80,7 @@ export default function Sidebar() {
     </div>
   );
 }
+
 
 // const Container = styled.div`
 //   background-color: black;

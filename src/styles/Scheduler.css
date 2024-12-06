@@ -1,14 +1,16 @@
 /* Scheduler.css */
 
 .SchContainer {
+    flex: 1; 
     padding: 2rem;
     color: white;
-    overflow: hidden;
+    background-color: #181818;
+    box-sizing: border-box;
 }
 
 .SchContainer h2 {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .SchContainer p {
