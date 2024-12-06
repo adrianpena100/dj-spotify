@@ -6,6 +6,8 @@ import Spotify from "./components/Spotify";
 import TimeChecker from "./components/TimeChecker";
 import HostMessages from "./components/HostMessages";
 import GuestEntry from "./components/GuestEntry";
+import Queue from "./components/Queue";
+import Scheduler from "./components/Scheduler";
 import Layout from "./components/Layout";
 import Callback from "./components/Callback"; // You'll create this component
 import { reducerCases } from "./utils/Constants";
@@ -39,6 +41,8 @@ export default function App() {
             <Route index element={<Spotify />} />
             <Route path="time-checker" element={<TimeChecker />} />
             <Route path="host-messages" element={<HostMessages />} />
+            <Route path="queue" element={<Queue />} />
+            <Route path="scheduler" element={<Scheduler />} />
             {/* Add more protected routes here */}
             <Route path="*" element={<Navigate to="/" />} />
           </Route>

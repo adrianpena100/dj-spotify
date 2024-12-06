@@ -1,7 +1,4 @@
-// src/components/Spotify.jsx
-import React, { useEffect, useRef, useState } from "react"; // Added 'useState' here
-import Sidebar from "./Sidebar";
-// import styled from "styled-components";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import axios from "axios";
@@ -135,7 +132,7 @@ export default function Spotify() {
   return (
     <div className="SpContainer">
       <div className="spotify__body">
-        <Sidebar />
+        {/* Sidebar component removed to prevent duplication */}
         <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
           <Navbar navBackground={navBackground} />
           <div className="body__contents">

@@ -1,33 +1,46 @@
 /* SpContainer */
-
 .SpContainer {
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;
-    display: grid;
-    grid-template-rows: 85vh 15vh; 
-}
-
-.SpContainer .spotify__body {
-    display: grid;
-    grid-template-columns: 15vw 85vw;
-    height: 100%;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .SpContainer .spotify__body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: calc(100vh - 70px); /* Subtract footer height to fit */
     background: linear-gradient(transparent, rgba(0, 0, 0, 1));
     background-color: rgb(32, 160, 100);
-}
-
-.SpContainer .spotify__body .body {
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-}
-
-.SpContainer .spotify__body .body::-webkit-scrollbar {
+    padding-bottom: 70px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  .SpContainer .spotify__body::-webkit-scrollbar {
     width: 0.7rem;
     max-height: 2rem;
+  }
+  
+  .SpContainer .spotify__body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .spotify__footer {
+    position: fixed;
+    bottom: 0;
+    left: 250px; /* This should match the sidebar width */
+    right: 0;
+    height: 70px; /* Adjust to the height of the footer/player */
+    background-color: #121212; /* Maintain consistent theme */
+    z-index: 100; /* Keep it above the main content */
+    display: flex;
+    align-items: center; /* Center player controls vertically */
+    padding: 0 20px; /* Add some padding for spacing */
+    box-sizing: border-box;
 }
 
-.SpContainer .spotify__body .body::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.6);
-}
+  
