@@ -1,4 +1,3 @@
-// src/components/GuestEntry.jsx
 import React, { useState } from "react";
 import "../styles/GuestEntry.css"; // Ensure this CSS file exists
 
@@ -8,21 +7,18 @@ export default function GuestEntry() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (songName.trim() === "") {
       setMessage("Please enter a song name.");
       return;
     }
-
     try {
-      const response = await fetch("http://localhost:5001/request-song", { // Ensure backend is on 5001
+      const response = await fetch("http://localhost:5001/request-song", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ songName }),
       });
-
       if (response.ok) {
         setMessage("Your request has been submitted!");
         setSongName("");

@@ -1,21 +1,28 @@
-/* PLayercontrols.css */
+/* PlayerControls.css */
 
 .PCContainer {
     display: flex;
+    flex-direction: column; /* Ensures elements stack vertically */
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-between;
     gap: 1rem;
+    width: 100%;
+    padding: 10px 20px; /* Padding for better spacing */
+    box-sizing: border-box; /* Include padding in size calculations */
 }
+
 .PCContainer .controls {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 2rem;
+    width: 100%; /* Ensure it takes full width */
 }
 
 .PCContainer .progress-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     width: 100%;
     max-width: 500px;
@@ -50,7 +57,7 @@
 }
 
 .PCContainer .state svg {
-color: white;
+    color: white;
 }
 
 .PCContainer .previous,
@@ -62,4 +69,15 @@ color: white;
 .PCContainer .shuffle,
 .PCContainer .repeat svg {
     font-size: 1.5rem;
+}
+
+/* Song name styling */
+.PCContainer .song-name {
+    flex: 1; /* Allow the song name to take available space */
+    text-align: center; /* Center align the song name */
+    color: white; /* Ensure the text is visible */
+    font-size: 1.2rem; /* Adjust the font size as needed */
+    overflow: hidden; /* Hide overflow */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
 }

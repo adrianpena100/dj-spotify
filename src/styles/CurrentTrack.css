@@ -14,6 +14,7 @@
 .CTContainer .track__info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     gap: 0.1rem;
 }
 

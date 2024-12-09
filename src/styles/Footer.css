@@ -1,13 +1,17 @@
 /* Footer.css */
 
 .FtContainer { /* "Footer Container" */
-    height: 100%; 
-    width: 100%;
+    position: fixed; /* Fixed position at the bottom */
+    bottom: 0; /* Stick to the bottom */
+    left: 250px; /* Same as sidebar width */
+    right: 0; /* Full width minus sidebar width */
+    height: 120px; /* Adjust height to fit content */
+    display: flex;
     background-color: #181818;
     border-top: 1px solid #282828;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0 20px; /* Padding for better spacing */
+    box-sizing: border-box; /* Include padding and border in the element's size */
+    z-index: 100; /* Ensure it stays on top of main content */
 }
