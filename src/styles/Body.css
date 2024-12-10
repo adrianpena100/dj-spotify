@@ -14,44 +14,6 @@
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
-@media (max-width: 768px) {
-    .Container .playlist {
-        margin: 0; /* Remove unnecessary margin */
-        display: flex;
-        flex-direction: column; /* Stack elements vertically for smaller screens */
-        align-items: center; /* Center elements */
-        gap: 1rem; /* Adjust gap */
-    }
-    
-    .Container .playlist .image {
-        width: 100%; /* Make the image container responsive */
-        display: flex;
-        justify-content: center; /* Center the image */
-    }
-    
-    .Container .playlist .image img {
-        height: auto; /* Maintain aspect ratio */
-        width: 30%; /* Scale the image relative to its container */
-        max-width: 300px; /* Limit the maximum width of the image */
-        object-fit: cover;
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 15px 30px -10px; /* Adjust shadow for smaller screens */
-    }
-
-    .Container .playlist .details {
-        text-align: center; /* Center-align details text */
-        margin: 0;
-        gap: 0 !important;
-    }
-
-    .Container .playlist .details .title{
-        margin-block: 0;
-    }
-
-    .Container .playlist .details .description{
-        margin: 0;
-    }
-}
-
 .Container .playlist .details {
     display: flex;
     flex-direction: column;
@@ -127,4 +89,45 @@
     text-align: center;
     color: #999;
     font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .Container .playlist {
+        margin: 0; /* Remove unnecessary margin */
+        display: flex;
+        flex-direction: column; /* Stack elements vertically for smaller screens */
+        align-items: center; /* Center elements */
+        gap: 1rem; /* Adjust gap */
+    }
+    
+    .Container .playlist .image {
+        width: 100%; /* Make the image container responsive */
+        display: flex;
+        justify-content: center; /* Center the image */
+    }
+    
+    .Container .playlist .image img {
+        height: auto; /* Maintain aspect ratio */
+        width: 30%; /* Scale the image relative to its container */
+        max-width: 300px; /* Limit the maximum width of the image */
+        object-fit: cover;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 15px 30px -10px; /* Adjust shadow for smaller screens */
+    }
+
+    .Container .playlist .details {
+        text-align: center; /* Center-align details text */
+        margin: 0;
+        gap: 0 !important;
+    }
+
+    .Container .playlist .details .title{
+        margin-block: 0;
+    }
+
+    .Container .playlist .details .description{
+        margin: 0;
+    }
+    .Container .list .tracks {
+        margin: 0 !important; /* Adjust margin for smaller screens */
+    }
 }

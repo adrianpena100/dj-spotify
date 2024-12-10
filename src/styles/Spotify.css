@@ -22,6 +22,21 @@
     display: none;
 }
 
+.SpContainer .spotify__body .body {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.SpContainer .spotify__body .body::-webkit-scrollbar {
+    width: 0.7rem;
+    max-height: 2rem;
+}
+
+.SpContainer .spotify__body .body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
 @media (max-width: 768px) {
     .SpContainer .spotify__body {
         display: flex;
@@ -45,20 +60,4 @@
         gap: 1rem;
         padding: 1rem;
     }
-
-}
-
-.SpContainer .spotify__body .body {
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-}
-
-.SpContainer .spotify__body .body::-webkit-scrollbar {
-    width: 0.7rem;
-    max-height: 2rem;
-}
-
-.SpContainer .spotify__body .body::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.6);
 }
