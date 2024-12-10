@@ -26,13 +26,24 @@
     .SpContainer .spotify__body {
         display: flex;
         flex-direction: column-reverse;
+        overflow: hidden;
     }
 
     .SpContainer .spotify__body .body .PlContainer {
         display: flex;
+        flex-direction: row;
+        overflow: hidden;
         overflow-x: auto;
         height: 15%;
         width: 100%;
+    }
+    .SpContainer .spotify__body .body .PlContainer ul {
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1rem;
+        padding: 1rem;
     }
 
 }

@@ -68,10 +68,6 @@
     color: red;
 }
 
-/* .SpContainer .spotify__body .Playlists {
-    display: none;
-} */
-
 /* Show Playlists in Spotify (Mobile) */
 @media (max-width: 768px) {  
     
@@ -82,4 +78,6 @@
     .SContainer .top__links .Playlists {
         display: none;
     }
+
+    
 }
