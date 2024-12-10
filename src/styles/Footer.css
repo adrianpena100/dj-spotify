@@ -13,9 +13,12 @@
 }
 
 @media (max-width: 768px) {
-    .FtContainer {
+    /* .FtContainer {
         justify-content: space-between;
-    }
+        grid-template-columns: 25% 75%;
+        width: 100%;
+        padding: 0;
+    } */
     .FtContainer .VContainer {
         display: none;
     }

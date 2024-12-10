@@ -63,3 +63,21 @@ color: white;
 .PCContainer .repeat svg {
     font-size: 1.5rem;
 }
+
+@media (max-width: 768px) {
+    .PCContainer {
+        width: 100%;
+        font-size: 100%;
+    }
+
+    .PCContainer .controls{
+        gap: 1rem;
+    }
+    .PCContainer .progress-container {
+        width: 100%;
+    }
+
+    .PCContainer .progress-container span {
+        display: 100%;
+    }
+}
