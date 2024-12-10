@@ -11,3 +11,12 @@
     justify-content: space-between;
     padding: 0 1rem;
 }
+
+@media (max-width: 768px) {
+    .FtContainer {
+        justify-content: space-between;
+    }
+    .FtContainer .VContainer {
+        display: none;
+    }
+}
