@@ -1,13 +1,45 @@
-// src/components/Queue.jsx
-import React from 'react';
-// import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import { useStateProvider } from '../utils/StateProvider';
 import "../styles/Queue.css";
-export default function Queue() {
-  const [{ scheduledPlaylists }] = useStateProvider();
 
-  // Sort playlists by time
-  const sortedPlaylists = scheduledPlaylists.sort((a, b) => {
+export default function Queue() {
+  const [{ scheduledPlaylists }, dispatch] = useStateProvider();
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaylists([...scheduledPlaylists]);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [scheduledPlaylists]);
+
+  useEffect(() => {
+    setPlaylists([...scheduledPlaylists]);
+  }, [scheduledPlaylists]);
+
+  const removePlaylist = (index) => {
+    const updatedPlaylists = playlists.filter((_, i) => i !== index);
+    setPlaylists(updatedPlaylists);
+    dispatch({
+      type: 'SET_SCHEDULED_PLAYLISTS',
+      scheduledPlaylists: updatedPlaylists,
+    });
+  };
+
+  const editPlaylistTime = (index, newTime) => {
+    const updatedPlaylists = playlists.map((playlist, i) => 
+      i === index ? { ...playlist, time: newTime } : playlist
+    );
+    setPlaylists(updatedPlaylists);
+    dispatch({
+      type: 'SET_SCHEDULED_PLAYLISTS',
+      scheduledPlaylists: updatedPlaylists,
+    });
+  };
+
+  // Sort playlists by time before rendering
+  const sortedPlaylists = [...playlists].sort((a, b) => {
     const timeA = new Date(`1970-01-01T${a.time}:00`);
     const timeB = new Date(`1970-01-01T${b.time}:00`);
     return timeA - timeB;
@@ -30,6 +62,11 @@ export default function Queue() {
                   ) : (
                     <span className="pending-label">Pending</span>
                   )}
+                  <button onClick={() => removePlaylist(index)}>Remove</button>
+                  <button onClick={() => {
+                    const newTime = prompt("Enter new time (HH:MM:SS)", playlist.time);
+                    if (newTime) editPlaylistTime(index, newTime);
+                  }}>Edit Time</button>
                 </div>
               </div>
             </li>
@@ -41,62 +78,3 @@ export default function Queue() {
     </div>
   );
 }
-
-// const Container = styled.div`
-//   padding: 2rem;
-//   color: white;
-
-//   h2 {
-//     margin-bottom: 2rem;
-//     font-size: 2.5rem;
-//   }
-
-//   ul {
-//     list-style-type: none;
-//     padding: 0;
-
-//     li {
-//       background-color: #282828;
-//       padding: 1rem;
-//       margin-bottom: 1rem;
-//       border-radius: 8px;
-//       display: flex;
-//       align-items: center;
-
-//       .playlist-info {
-//         display: flex;
-//         align-items: center;
-//         gap: 1rem;
-
-//         img {
-//           width: 64px;
-//           height: 64px;
-//           border-radius: 8px;
-//         }
-
-//         h3 {
-//           margin: 0;
-//         }
-
-//         p {
-//           margin: 0.5rem 0 0;
-//           color: #b3b3b3;
-//         }
-
-//         .played-label {
-//           color: #1db954;
-//           font-weight: bold;
-//         }
-
-//         .pending-label {
-//           color: #ffa500;
-//           font-weight: bold;
-//         }
-//       }
-//     }
-//   }
-
-//   p {
-//     font-size: 1.2rem;
-//   }
-// `;

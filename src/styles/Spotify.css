@@ -7,29 +7,51 @@
     flex-direction: column;
     margin: 0;
     padding: 0;
-  }
-  
-  .SpContainer .spotify__body {
+}
+
+.SpContainer .spotify__body {
     flex: 1;
     overflow-y: auto;
     min-height: calc(100vh - 70px); /* Subtract footer height to fit */
     background: linear-gradient(transparent, rgba(0, 0, 0, 1));
     background-color: rgb(32, 160, 100);
+}
+
+/* Guest input content retained as comments for reference:
+
+.SpContainer .spotify__body {
     padding-bottom: 70px;
     margin: 0;
     box-sizing: border-box;
-  }
-  
-  .SpContainer .spotify__body::-webkit-scrollbar {
+}
+
+.SpContainer .spotify__body::-webkit-scrollbar {
     width: 0.7rem;
     max-height: 2rem;
-  }
-  
-  .SpContainer .spotify__body::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.6);
-  }
+}
 
-  .spotify__footer {
+*/
+
+.SpContainer .spotify__body .body .PlContainer {
+    display: none;
+}
+
+.SpContainer .spotify__body .body {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.SpContainer .spotify__body .body::-webkit-scrollbar {
+    width: 0.7rem;
+    max-height: 2rem;
+}
+
+.SpContainer .spotify__body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.spotify__footer {
     position: fixed;
     bottom: 0;
     left: 250px; /* This should match the sidebar width */
@@ -43,4 +65,32 @@
     box-sizing: border-box;
 }
 
-  
+.SpContainer .spotify__body .body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+    .SpContainer .spotify__body {
+        display: flex;
+        flex-direction: column-reverse;
+        overflow: hidden;
+    }
+
+    .SpContainer .spotify__body .body .PlContainer {
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        overflow-x: auto;
+        height: 15%;
+        width: 100%;
+    }
+
+    .SpContainer .spotify__body .body .PlContainer ul {
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1rem;
+        padding: 1rem;
+    }
+}

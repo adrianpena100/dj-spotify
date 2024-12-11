@@ -84,3 +84,27 @@
 .NavContainer .user-actions .logout-button svg {
     font-size: 1.5rem;
 }
+
+.NavContainer .nav-logo {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .NavContainer {
+        justify-content: space-between;
+    }
+    
+    .NavContainer .nav-logo {
+        display: block !important;
+        text-align: center;
+        margin: 1rem 0;
+        width: 20%;
+        height: auto;
+    }
+
+    .NavContainer .nav-logo img {
+        max-inline-size: 80%;
+        block-size: auto;
+    }
+
+}

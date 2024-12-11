@@ -42,3 +42,14 @@
     background-color: #1aa34a;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
+
+.StyledButton::after {
+    content: "Create Party Playlist"; /* Default text */
+}
+
+
+@media (max-width: 768px) {
+    .StyledButton::after {
+        content: "Create Playlist"; /* Text for smaller screens */
+    }
+}

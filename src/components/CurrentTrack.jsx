@@ -48,9 +48,11 @@ export default function CurrentTrack() {
             <img src={currentPlaying.image} alt="currentPlaying" />
           </div>
           <div className="track__info">
-            <h4 className="track__info__track__name">{currentPlaying.name}</h4>
+            <h4 className="track__info__track__name">
+              <span>{currentPlaying.name}</span>
+            </h4>
             <h6 className="track__info__track__artists">
-              {currentPlaying.artists.join(", ")}
+              <span>{currentPlaying.artists.join(", ")}</span>
             </h6>
           </div>
         </div>

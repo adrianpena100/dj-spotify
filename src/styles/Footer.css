@@ -1,5 +1,4 @@
 /* Footer.css */
-
 .FtContainer { /* "Footer Container" */
     position: fixed; /* Fixed position at the bottom */
     bottom: 0; /* Stick to the bottom */
@@ -11,7 +10,35 @@
     border-top: 1px solid #282828;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px; /* Padding for better spacing */
-    box-sizing: border-box; /* Include padding and border in the element's size */
-    z-index: 100; /* Ensure it stays on top of main content */
+    padding: 0 1rem;
+}
+
+/* Content from guest-input retained as comments for reference:
+.FtContainer { 
+    position: fixed; 
+    bottom: 0; 
+    left: 250px; 
+    right: 0; 
+    height: 120px; 
+    display: flex;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px; 
+    box-sizing: border-box; 
+    z-index: 100; 
+}
+*/
+
+@media (max-width: 768px) {
+    /* .FtContainer {
+        justify-content: space-between;
+        grid-template-columns: 25% 75%;
+        width: 100%;
+        padding: 0;
+    } */
+    .FtContainer .VContainer {
+        display: none;
+    }
 }

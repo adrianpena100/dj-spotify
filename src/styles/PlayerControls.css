@@ -71,13 +71,32 @@
     font-size: 1.5rem;
 }
 
-/* Song name styling */
+/* Content from guest-input retained as comments for reference:
 .PCContainer .song-name {
-    flex: 1; /* Allow the song name to take available space */
-    text-align: center; /* Center align the song name */
-    color: white; /* Ensure the text is visible */
-    font-size: 1.2rem; /* Adjust the font size as needed */
-    overflow: hidden; /* Hide overflow */
-    white-space: nowrap; /* Prevent text from wrapping */
-    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    flex: 1; Allow the song name to take available space 
+    text-align: center; /* Center align the song name 
+    color: white; /* Ensure the text is visible 
+    font-size: 1.2rem; /* Adjust the font size as needed
+    overflow: hidden; /* Hide overflow
+    white-space: nowrap; /* Prevent text from wrapping
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text 
+}
+*/
+
+@media (max-width: 768px) {
+    .PCContainer {
+        width: 100%;
+        font-size: 100%;
+    }
+
+    .PCContainer .controls {
+        gap: 1rem;
+    }
+    .PCContainer .progress-container {
+        width: 100%;
+    }
+
+    .PCContainer .progress-container span {
+        display: 100%;
+    }
 }

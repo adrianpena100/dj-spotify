@@ -67,3 +67,17 @@
 .PlContainer ul .playlist-item .menu button:hover {
     color: red;
 }
+
+/* Show Playlists in Spotify (Mobile) */
+@media (max-width: 768px) {  
+    
+    .SpContainer .spotify__body .Playlists {
+        display: block;
+    }
+    
+    .SContainer .top__links .Playlists {
+        display: none;
+    }
+
+    
+}

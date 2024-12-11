@@ -7,6 +7,7 @@ import Body from "./Body";
 import { reducerCases } from "../utils/Constants";
 import SpotifyPlayer from "./SpotifyPlayer";
 import "../styles/Spotify.css";
+import Playlists from "./Playlists";
 
 export default function Spotify() {
   const [{ token, scheduledPlaylists, deviceId }, dispatch] = useStateProvider();
@@ -135,6 +136,7 @@ export default function Spotify() {
         {/* Sidebar component removed to prevent duplication */}
         <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
           <Navbar navBackground={navBackground} />
+          <Playlists />
           <div className="body__contents">
             <Body headerBackground={headerBackground} />
           </div>

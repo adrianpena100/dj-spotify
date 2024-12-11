@@ -151,3 +151,21 @@
     font-size: 0.9rem;
     color: #ccc;
 }
+
+@media (max-width: 768px) {
+    .SchContainer .playlist-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    }
+
+    .SchContainer .scheduler-container .schedule-form .time-selectors select{
+        font-size: 1rem;
+        height: auto;
+        width: 20%;
+    }
+
+    button[type="submit"] {
+        font-size: 1rem;
+        height: auto;
+        width: 20%;
+    }
+}
