@@ -25,6 +25,7 @@ export default function Navbar({ navBackground }) {
   };
 
   const handleLogout = () => {
+    window.localStorage.removeItem('spotify_token');
     dispatch({ type: reducerCases.SET_TOKEN, token: null });
     dispatch({ type: reducerCases.CLEAR_SCHEDULED_PLAYLISTS });
     window.location.href = '/'; // Redirect to login

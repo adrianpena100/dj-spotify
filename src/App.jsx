@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
@@ -9,7 +8,7 @@ import GuestEntry from "./components/GuestEntry";
 import Queue from "./components/Queue";
 import Scheduler from "./components/Scheduler";
 import Layout from "./components/Layout";
-import Callback from "./components/Callback"; // You'll create this component
+import Callback from "./components/Callback";
 import { reducerCases } from "./utils/Constants";
 import { useStateProvider } from "./utils/StateProvider";
 
@@ -17,13 +16,9 @@ export default function App() {
   const [{ token }, dispatch] = useStateProvider();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    let tokenFromHash = null;
-    if (hash) {
-      tokenFromHash = hash.substring(1).split("&")[0].split("=")[1];
-      if (tokenFromHash) {
-        dispatch({ type: reducerCases.SET_TOKEN, token: tokenFromHash });
-      }
+    const storedToken = window.localStorage.getItem('spotify_token'); // Retrieve token from localStorage
+    if (storedToken) {
+      dispatch({ type: reducerCases.SET_TOKEN, token: storedToken });
     }
     document.title = "Spotify Scheduler";
   }, [dispatch]);
@@ -43,11 +38,9 @@ export default function App() {
             <Route path="host-messages" element={<HostMessages />} />
             <Route path="queue" element={<Queue />} />
             <Route path="scheduler" element={<Scheduler />} />
-            {/* Add more protected routes here */}
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         ) : (
-          // Redirect all other routes to Login if not authenticated
           <Route path="*" element={<Login />} />
         )}
       </Routes>

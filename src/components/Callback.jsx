@@ -1,4 +1,3 @@
-// src/components/Callback.jsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStateProvider } from "../utils/StateProvider";
@@ -18,6 +17,7 @@ export default function Callback() {
       token = params.get("access_token");
       if (token) {
         dispatch({ type: reducerCases.SET_TOKEN, token });
+        window.localStorage.setItem('spotify_token', token); // Store token in localStorage
         navigate("/"); // Redirect to the main dashboard after setting the token
       } else {
         navigate("/login"); // Redirect to login if token isn't found

@@ -27,7 +27,7 @@
 }
 
 .SContainer .spotify-logo {
-    width: 100px;  /* Adjust to desired size */
+    width: 100%;  /* Adjust to desired size */
     height: auto;  /* Maintain aspect ratio */
 }
 
