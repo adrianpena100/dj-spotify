@@ -24,3 +24,42 @@
 .CTContainer .track__info__track__artists {
     color: #b3b3b3;
 }
+
+@media (max-width: 768px) {
+    .CTContainer{
+        width: 100%;
+    }
+
+    .CTContainer .track {
+        width: 40%;
+        gap: 10%;
+    }
+    .CTContainer .track__info {
+        width: 100%;
+    }
+
+    .CTContainer .track__info__track__name,
+    .CTContainer .track__info__track__artists {
+        position: relative;
+        white-space: nowrap; /* Prevent text wrapping */
+        overflow: hidden; /* Hide overflow text */
+        display: block;
+        margin: 10%;
+    }
+
+    .CTContainer .track__info__track__name span,
+    .CTContainer .track__info__track__artists span {
+        display: inline-block; /* Ensure text behaves as one block */
+        position: relative;
+        animation: scroll-text 8s linear infinite; /* Apply scrolling animation */
+    }
+
+    @keyframes scroll-text {
+        from {
+            transform: translateX(100%); /* Start outside the right edge */
+        }
+        to {
+            transform: translateX(-100%); /* End outside the left edge */
+        }
+    } 
+} 
