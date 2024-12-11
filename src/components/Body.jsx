@@ -20,17 +20,37 @@ export default function Body({ headerBackground }) {
       selectedView,
       updatePlaylists,
       notification,
+      sessionId,
     },
     dispatch,
   ] = useStateProvider();
 
   const [showInbox, setShowInbox] = useState(false);
   const [guestMessages, setGuestMessages] = useState([]);
+  const [adminSessionId, setAdminSessionId] = useState("");
 
   useEffect(() => {
-    const messages = JSON.parse(localStorage.getItem("guestMessages")) || [];
-    setGuestMessages(messages);
-  }, []);
+    const storedSessionId = localStorage.getItem("sessionId");
+    if (storedSessionId) {
+      dispatch({ type: reducerCases.SET_SESSION_ID, sessionId: storedSessionId });
+    }
+  }, [dispatch]);
+
+  const fetchMessages = async (sessionId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/messages/${sessionId}`);
+      const data = await response.json();
+      setGuestMessages(data);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (sessionId) {
+      fetchMessages(sessionId);
+    }
+  }, [sessionId]);
 
   useEffect(() => {
     if (selectedPlaylistId && !selectedView) {
@@ -150,6 +170,13 @@ export default function Body({ headerBackground }) {
       {showInbox && (
         <div className="inbox">
           <h2>Guest Messages</h2>
+          <input
+            type="text"
+            value={adminSessionId}
+            onChange={(e) => setAdminSessionId(e.target.value)}
+            placeholder="Enter Session ID"
+          />
+          <button onClick={() => fetchMessages(adminSessionId)}>Fetch Messages</button>
           {guestMessages.length > 0 ? (
             guestMessages.map((message, index) => (
               <div key={index} className="message">

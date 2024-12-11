@@ -4,6 +4,8 @@ import "../styles/Login.css";
 export default function Login() {
   const [showGuestForm, setShowGuestForm] = useState(false);
   const [guestMessage, setGuestMessage] = useState("");
+  const [sessionId, setSessionId] = useState("");
+  const [createdSessionId, setCreatedSessionId] = useState(null);
 
   const handleClick = async () => {
     const client_id = "69fd466f76c84dc9b965ac235c3c97b7";
@@ -26,13 +28,36 @@ export default function Login() {
     )}&response_type=token&show_dialog=true`;
   };
 
-  const handleGuestSubmit = () => {
-    // Save the guest message to localStorage or send it to a backend
-    const messages = JSON.parse(localStorage.getItem("guestMessages")) || [];
-    messages.push(guestMessage);
-    localStorage.setItem("guestMessages", JSON.stringify(messages));
-    setGuestMessage("");
-    setShowGuestForm(false);
+  const createSession = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/session', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCreatedSessionId(data.sessionId);
+    } catch (error) {
+      console.error('Error creating session:', error);
+    }
+  };
+
+  const handleGuestSubmit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/messages/${sessionId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: guestMessage }),
+      });
+      if (response.ok) {
+        setGuestMessage("");
+        setShowGuestForm(false);
+      } else {
+        console.error('Failed to submit message');
+      }
+    } catch (error) {
+      console.error('Error submitting message:', error);
+    }
   };
 
   return (
@@ -43,9 +68,17 @@ export default function Login() {
       />
       <div>Spotify Live DJ</div>
       <button onClick={handleClick}>Login With Spotify</button>
+      <button onClick={createSession}>Create Session</button>
+      {createdSessionId && <div>Session ID: {createdSessionId}</div>}
       <button onClick={() => setShowGuestForm(!showGuestForm)}>Guest Input</button>
       {showGuestForm && (
         <div className="guest-form">
+          <input
+            type="text"
+            value={sessionId}
+            onChange={(e) => setSessionId(e.target.value)}
+            placeholder="Enter Session ID"
+          />
           <textarea
             value={guestMessage}
             onChange={(e) => setGuestMessage(e.target.value)}
