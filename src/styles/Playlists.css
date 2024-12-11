@@ -3,13 +3,16 @@
 .PlContainer {
     color: #b3b3b3;
     height: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 .PlContainer ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .PlContainer ul .playlist-item {
@@ -20,6 +23,12 @@
     cursor: pointer;
     position: relative;
     transition: background-color 0.3s ease-in-out;
+}
+
+.PlContainer ul .playlist-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .PlContainer ul .playlist-item:hover {
