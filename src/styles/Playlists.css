@@ -25,6 +25,12 @@
     transition: background-color 0.3s ease-in-out;
 }
 
+.PlContainer ul .playlist-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .PlContainer ul .playlist-item:hover {
     color: white;
     background-color: rgba(255, 255, 255, 0.1);
