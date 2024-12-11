@@ -1,8 +1,12 @@
-import React from "react";
-// import styled from "styled-components";
+import React, { useState } from "react";
 import "../styles/Login.css";
 
 export default function Login() {
+  const [showGuestForm, setShowGuestForm] = useState(false);
+  const [guestMessage, setGuestMessage] = useState("");
+  const [sessionId, setSessionId] = useState("");
+  const [createdSessionId, setCreatedSessionId] = useState(null);
+
   const handleClick = async () => {
     const client_id = "69fd466f76c84dc9b965ac235c3c97b7";
     const redirect_uri = "http://localhost:3000/callback";
@@ -15,7 +19,7 @@ export default function Login() {
       "user-read-currently-playing",
       "user-read-recently-played",
       "user-top-read",
-      "streaming", // Add this line
+      "streaming",
       "playlist-modify-public",
       "playlist-modify-private"
     ];
@@ -23,6 +27,39 @@ export default function Login() {
       " "
     )}&response_type=token&show_dialog=true`;
   };
+
+  const createSession = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/session', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCreatedSessionId(data.sessionId);
+    } catch (error) {
+      console.error('Error creating session:', error);
+    }
+  };
+
+  const handleGuestSubmit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/messages/${sessionId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: guestMessage }),
+      });
+      if (response.ok) {
+        setGuestMessage("");
+        setShowGuestForm(false);
+      } else {
+        console.error('Failed to submit message');
+      }
+    } catch (error) {
+      console.error('Error submitting message:', error);
+    }
+  };
+
   return (
     <div className="LgContainer">
       <img
@@ -31,37 +68,25 @@ export default function Login() {
       />
       <div>Spotify Live DJ</div>
       <button onClick={handleClick}>Login With Spotify</button>
+      <button onClick={createSession}>Create Session</button>
+      {createdSessionId && <div>Session ID: {createdSessionId}</div>}
+      <button onClick={() => setShowGuestForm(!showGuestForm)}>Guest Input</button>
+      {showGuestForm && (
+        <div className="guest-form">
+          <input
+            type="text"
+            value={sessionId}
+            onChange={(e) => setSessionId(e.target.value)}
+            placeholder="Enter Session ID"
+          />
+          <textarea
+            value={guestMessage}
+            onChange={(e) => setGuestMessage(e.target.value)}
+            placeholder="Enter your message"
+          />
+          <button onClick={handleGuestSubmit}>Submit</button>
+        </div>
+      )}
     </div>
   );
 }
-
-// const Container = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: column;
-//   height: 100vh;
-//   width: 100vw;
-//   background-color: #121212; /* Changed to Spotify's dark grey */
-//   gap: 5rem;
-
-//   img {
-//     height: 15vh; /* Adjusted the image size to be smaller */
-//   }
-
-//   div {
-//     font-size: 2rem; /* Adjust as needed */
-//     color: white; /* Set the font color to white */
-//     font-weight: bold;
-//   }
-
-//   button {
-//     padding: 0.75rem 3rem; /* Reduced the size of the button */
-//     border-radius: 3rem;
-//     background-color: #1db954;
-//     color: white;
-//     border: none;
-//     font-size: 1.2rem; /* Reduced the font size */
-//     cursor: pointer;
-//   }
-// `;

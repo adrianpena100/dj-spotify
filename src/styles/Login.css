@@ -30,3 +30,22 @@
     font-size: 1.2rem; /* Reduced the font size */
     cursor: pointer;
 }
+
+/* Add these styles to Login.css */
+.guest-form {
+  margin-top: 20px;
+}
+
+.guest-form textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.guest-form button {
+  padding: 10px 20px;
+  background-color: #1db954;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
