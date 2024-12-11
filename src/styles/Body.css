@@ -52,7 +52,7 @@
     margin-bottom: 5rem;  
 }
 
-.Container .list .tracks .row{
+.Container .list .tracks .row {
     padding: 0.5rem 1rem;
     display: grid;
     grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr 0.1fr; /* Adjusted to add a new column */  
@@ -74,7 +74,7 @@
     object-fit: cover;
 }
 
-.Container .list .tracks .row .detail{
+.Container .list .tracks .row .detail {
     display: flex;
     gap: 1rem;
 }
@@ -120,14 +120,45 @@
         gap: 0 !important;
     }
 
-    .Container .playlist .details .title{
+    .Container .playlist .details .title {
         margin-block: 0;
     }
 
-    .Container .playlist .details .description{
+    .Container .playlist .details .description {
         margin: 0;
     }
     .Container .list .tracks {
         margin: 0 !important; /* Adjust margin for smaller screens */
     }
+}
+
+/* Add these styles to Body.css */
+.inbox-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.inbox {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.inbox h2 {
+  margin-top: 0;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
 }
